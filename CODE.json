@@ -842,141 +842,141 @@
     {
         "id": 121,
         "slip_no": "slip 11",
-        "question": "",
+        "question": "Create a button with different styles (Secondary, Primary, Success, Error, Info, Warning, Danger) using Bootstrap.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// HTML and Bootstrap buttons with different styles\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>\n  <title>Buttons with Bootstrap</title>\n</head>\n<body>\n  <button class='btn btn-primary'>Primary</button>\n  <button class='btn btn-secondary'>Secondary</button>\n  <button class='btn btn-success'>Success</button>\n  <button class='btn btn-danger'>Danger</button>\n  <button class='btn btn-info'>Info</button>\n  <button class='btn btn-warning'>Warning</button>\n</body>\n</html>"
     },
     {
         "id": 122,
         "slip_no": "slip 12",
-        "question": "",
+        "question": "Write a PHP script for the following: Design a form to accept two numbers from the user. Give options to choose the arithmetic operation (use radio buttons). Display the result on the next form. (Use the concept of function and default parameters. Use ‘include’ construct or require statement.)",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// HTML form for arithmetic operations\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Arithmetic Operations</title>\n</head>\n<body>\n  <form method='post' action='result.php'>\n    <label for='num1'>First Number:</label><br>\n    <input type='number' id='num1' name='num1' required><br>\n    <label for='num2'>Second Number:</label><br>\n    <input type='number' id='num2' name='num2' required><br>\n    <input type='radio' id='add' name='operation' value='add' checked> Add<br>\n    <input type='radio' id='sub' name='operation' value='sub'> Subtract<br>\n    <input type='radio' id='mul' name='operation' value='mul'> Multiply<br>\n    <input type='radio' id='div' name='operation' value='div'> Divide<br>\n    <input type='submit' value='Submit'>\n  </form>\n</body>\n</html>\n<?php\n// result.php\nfunction calculate($num1, $num2, $operation) {\n  switch ($operation) {\n    case 'add': return $num1 + $num2;\n    case 'sub': return $num1 - $num2;\n    case 'mul': return $num1 * $num2;\n    case 'div': return $num2 != 0 ? $num1 / $num2 : 'Cannot divide by zero';\n    default: return 'Invalid Operation';\n  }\n}\nif ($_SERVER['REQUEST_METHOD'] == 'POST') {\n  $num1 = $_POST['num1'];\n  $num2 = $_POST['num2'];\n  $operation = $_POST['operation'];\n  echo 'Result: ' . calculate($num1, $num2, $operation);\n}\n?>"
     },
     {
         "id": 123,
         "slip_no": "slip 13",
-        "question": "",
+        "question": "Write a PHP script to create a chess board using CSS on table cells.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// HTML with PHP to generate a chessboard\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    table { border-collapse: collapse; width: 320px; height: 320px; }\n    td { width: 40px; height: 40px; }\n    .black { background-color: black; }\n    .white { background-color: white; }\n  </style>\n</head>\n<body>\n  <table border='1'>\n    <?php\n    for ($row = 0; $row < 8; $row++) {\n      echo '<tr>';\n      for ($col = 0; $col < 8; $col++) {\n        $color = ($row + $col) % 2 == 0 ? 'white' : 'black';\n        echo \"<td class='$color'></td>\";\n      }\n      echo '</tr>';\n    }\n    ?>\n  </table>\n</body>\n</html>"
     },
     {
         "id": 124,
         "slip_no": "slip 14",
-        "question": "",
+        "question": "Create a container add row inside it and add 3 columns inside row using Bootstrap.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// HTML structure using Bootstrap container, row, and columns\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>\n  <title>Bootstrap Grid</title>\n</head>\n<body>\n  <div class='container'>\n    <div class='row'>\n      <div class='col'>Column 1</div>\n      <div class='col'>Column 2</div>\n      <div class='col'>Column 3</div>\n    </div>\n  </div>\n</body>\n</html>"
     },
     {
         "id": 125,
         "slip_no": "slip 15",
-        "question": "",
+        "question": "Design a form to accept string from the user and perform the following operations: a. Select first 5 words from the string. b. Convert the given string to lowercase and then to Title case. c. Pad the given string with '*' from left and right both the sides. d. Remove the leading whitespaces from the given string. e. Find the reverse of the given string.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// HTML form to accept a string and perform multiple operations\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <title>String Operations</title>\n</head>\n<body>\n  <form method='post'>\n    <label for='inputString'>Enter a string:</label><br>\n    <input type='text' id='inputString' name='inputString' required><br>\n    <input type='submit' value='Submit'>\n  </form>\n  <?php\n  if ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $inputString = trim($_POST['inputString']);\n    $words = explode(' ', $inputString);\n\n    // a. Select first 5 words\n    $firstFiveWords = implode(' ', array_slice($words, 0, 5));\n    echo 'First 5 words: ' . $firstFiveWords . '<br>';\n\n    // b. Convert to lowercase and then Title case\n    $lowercaseString = strtolower($inputString);\n    $titleCaseString = ucwords($lowercaseString);\n    echo 'Title case: ' . $titleCaseString . '<br>';\n\n    // c. Pad the string\n    $paddedString = str_pad($inputString, strlen($inputString) + 2, '*', STR_PAD_BOTH);\n    echo 'Padded String: ' . $paddedString . '<br>';\n\n    // d. Remove leading whitespaces\n    echo 'String without leading spaces: ' . $inputString . '<br>';\n\n    // e. Reverse the string\n    echo 'Reversed String: ' . strrev($inputString) . '<br>';\n  }\n  ?>\n</body>\n</html>"
     },
     {
         "id": 126,
         "slip_no": "slip 16",
-        "question": "",
+        "question": "Write a menu driven program to perform the following stack related operations: a) Insert an element in stack b) Delete an element from stack c) Display the contents of stack.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// Simple stack operations using PHP\n$stack = [];\nfunction push(&$stack, $element) {\n  array_push($stack, $element);\n}\nfunction pop(&$stack) {\n  return array_pop($stack);\n}\nfunction display($stack) {\n  return implode(', ', $stack);\n}\n// Sample usage\npush($stack, 10);\npush($stack, 20);\npush($stack, 30);\necho 'Stack: ' . display($stack) . '<br>';\necho 'Popped: ' . pop($stack) . '<br>';\necho 'Stack after pop: ' . display($stack);\n?>"
     },
     {
         "id": 127,
         "slip_no": "slip 17",
-        "question": "",
+        "question": "Write a PHP script to sort the following associative array: array('Sagar'=>'31','Vicky'=>'41','Leena'=>'39','Ramesh'=>'40') in a) ascending order sort by Value b) ascending order sort by Key c) descending order sorting by Value d) descending order sorting by Key.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n// Associative array\n$array = ['Sagar' => 31, 'Vicky' => 41, 'Leena' => 39, 'Ramesh' => 40];\n// a. Ascending order sort by Value\nasort($array);\necho 'Ascending order by value: ' . print_r($array, true) . '<br>';\n// b. Ascending order sort by Key\nksort($array);\necho 'Ascending order by key: ' . print_r($array, true) . '<br>';\n// c. Descending order sort by Value\narsort($array);\necho 'Descending order by value: ' . print_r($array, true) . '<br>';\n// d. Descending order sort by Key\nkrsort($array);\necho 'Descending order by key: ' . print_r($array, true);\n?>"
     },
     {
         "id": 128,
         "slip_no": "slip 18",
-        "question": "",
+        "question": "Write a menu driven program to perform the following operations on an associative array: a. Reverse the order of each element’s key-value pair. b. Traverse the element in an array in random order. c. Convert the array elements into individual variables. d. Display the elements of an array along with key.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$array = ['apple' => 'red', 'banana' => 'yellow', 'grapes' => 'green'];\n// a. Reverse the order of key-value pairs\n$reversed = array_flip($array);\necho 'Reversed key-value pairs: ' . print_r($reversed, true) . '<br>';\n// b. Random order traversal\nshuffle($array);\necho 'Array in random order: ' . print_r($array, true) . '<br>';\n// c. Convert array elements into variables\nextract($array);\necho 'Extracted variables: $apple = ' . $apple . ', $banana = ' . $banana . ', $grapes = ' . $grapes . '<br>';\n// d. Display elements with key\nforeach ($array as $key => $value) {\n  echo \"$key => $value<br>\";\n}\n?>"
     },
     {
         "id": 129,
         "slip_no": "slip 19",
-        "question": "",
+        "question": "Write a PHP script to accept 2 strings from the user, the first string should be a sentence and the second can be a word. a. Delete a small part from first string after accepting position and number of characters to remove. b. Insert the given small string in the given big string at specified position without removing any characters from the big string. c. Replace some characters in the big string.",
         "language": "php",
-        "code": ""
+        "code": "<?php\nif ($_SERVER['REQUEST_METHOD'] == 'POST') {\n  $sentence = $_POST['sentence'];\n  $word = $_POST['word'];\n  $position = $_POST['position'];\n  $numToRemove = $_POST['numToRemove'];\n\n  // a. Remove part of the string\n  $modifiedSentence = substr_replace($sentence, '', $position, $numToRemove);\n  echo 'Modified Sentence: ' . $modifiedSentence . '<br>';\n\n  // b. Insert word in the sentence\n  $sentenceWithInsert = substr_replace($sentence, $word, $position, 0);\n  echo 'Sentence after insert: ' . $sentenceWithInsert . '<br>';\n\n  // c. Replace some characters\n  $replacedSentence = str_replace($word, 'replaced', $sentence);\n  echo 'Replaced Sentence: ' . $replacedSentence . '<br>';\n}\n?>\n<form method='post'>\n  <input type='text' name='sentence' placeholder='Enter a sentence'><br>\n  <input type='text' name='word' placeholder='Enter a word'><br>\n  <input type='number' name='position' placeholder='Position'><br>\n  <input type='number' name='numToRemove' placeholder='Characters to remove'><br>\n  <input type='submit'>\n</form>"
     },
     {
         "id": 130,
         "slip_no": "slip 20",
-        "question": "",
+        "question": "Write a menu driven program to perform the following operations on associative arrays: a) Split an array into chunks. b) Sort the array by values without changing the keys. c) Filter the even elements from an array.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$array = [1, 2, 3, 4, 5, 6, 7, 8, 9];\n// a. Split into chunks\n$chunks = array_chunk($array, 3);\necho 'Array chunks: ' . print_r($chunks, true) . '<br>';\n// b. Sort by values without changing keys\nasort($array);\necho 'Sorted array: ' . print_r($array, true) . '<br>';\n// c. Filter even elements\n$evens = array_filter($array, fn($n) => $n % 2 == 0);\necho 'Even elements: ' . print_r($evens, true);\n?>"
     },
     {
         "id": 131,
         "slip_no": "slip 21",
-        "question": "",
+        "question": "Write a menu driven program to perform the following queue related operations a) Insert an element in queue b) Delete an element from queue c) Display the contents of queue",
         "language": "php",
-        "code": ""
+        "code": "<?php\nclass Queue {\n    private $queue = array();\n\n    public function insert($item) {\n        array_push($this->queue, $item);\n        echo \"Element inserted: $item\\n\";\n    }\n\n    public function delete() {\n        if (empty($this->queue)) {\n            echo \"Queue is empty\\n\";\n        } else {\n            $item = array_shift($this->queue);\n            echo \"Element deleted: $item\\n\";\n        }\n    }\n\n    public function display() {\n        if (empty($this->queue)) {\n            echo \"Queue is empty\\n\";\n        } else {\n            echo \"Queue contents: \" . implode(', ', $this->queue) . \"\\n\";\n        }\n    }\n}\n\n$queue = new Queue();\n\nwhile (true) {\n    echo \"1. Insert element\\n2. Delete element\\n3. Display queue\\n4. Exit\\n\";\n    $choice = readline('Enter your choice: ');\n\n    switch ($choice) {\n        case 1:\n            $element = readline('Enter element to insert: ');\n            $queue->insert($element);\n            break;\n        case 2:\n            $queue->delete();\n            break;\n        case 3:\n            $queue->display();\n            break;\n        case 4:\n            exit;\n        default:\n            echo \"Invalid choice\\n\";\n    }\n}\n?>"
     },
     {
         "id": 132,
         "slip_no": "slip 22",
-        "question": "",
+        "question": "Create an array of 15 high temperatures, approximating the weather for a spring month, then find the average high temp, the five warmest high temps. Display the result on the browser.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$temperatures = [18, 20, 25, 30, 22, 26, 28, 29, 21, 19, 27, 23, 24, 22, 31];\n$average = array_sum($temperatures) / count($temperatures);\nrsort($temperatures);\n$top_five = array_slice($temperatures, 0, 5);\n\necho \"Average Temperature: $average°C\\n\";\necho \"Five Warmest Temperatures: \" . implode(', ', $top_five) . \"°C\\n\";\n?>"
     },
     {
         "id": 133,
         "slip_no": "slip 23",
-        "question": "",
+        "question": "Write a PHP script for the following: Design a form to accept the marks of 5 different subjects of a student, having serial number, subject name & marks out of 100. Display the result in the tabular format which will have total, percentage and grade. Use only 3 text boxes.(Use array of form parameters)",
         "language": "php",
-        "code": ""
+        "code": "<?php\nif ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $subjects = $_POST['subject'];\n    $marks = $_POST['marks'];\n    $total = array_sum($marks);\n    $percentage = $total / count($marks);\n    $grade = ($percentage >= 90) ? 'A' : (($percentage >= 80) ? 'B' : (($percentage >= 70) ? 'C' : 'D'));\n    echo \"<table border='1'>\";\n    echo \"<tr><th>Subject</th><th>Marks</th></tr>\";\n    foreach ($subjects as $index => $subject) {\n        echo \"<tr><td>$subject</td><td>{$marks[$index]}</td></tr>\";\n    }\n    echo \"<tr><td>Total</td><td>$total</td></tr>\";\n    echo \"<tr><td>Percentage</td><td>$percentage%</td></tr>\";\n    echo \"<tr><td>Grade</td><td>$grade</td></tr>\";\n    echo \"</table>\";\n}\n?>\n<form method='post'>\n    Subject 1: <input type='text' name='subject[]'><input type='number' name='marks[]'><br>\n    Subject 2: <input type='text' name='subject[]'><input type='number' name='marks[]'><br>\n    Subject 3: <input type='text' name='subject[]'><input type='number' name='marks[]'><br>\n    <input type='submit' value='Submit'>\n</form>"
     },
     {
         "id": 134,
         "slip_no": "slip 24",
-        "question": "",
+        "question": "Write a PHP program to read two file names from user and append content of first file into second file.",
         "language": "php",
-        "code": ""
+        "code": "<?php\nif ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $file1 = $_POST['file1'];\n    $file2 = $_POST['file2'];\n    $content = file_get_contents($file1);\n    file_put_contents($file2, $content, FILE_APPEND);\n    echo \"Content of $file1 appended to $file2\";\n}\n?>\n<form method='post'>\n    File 1: <input type='text' name='file1'><br>\n    File 2: <input type='text' name='file2'><br>\n    <input type='submit' value='Submit'>\n</form>"
     },
     {
         "id": 135,
         "slip_no": "slip 25",
-        "question": "",
+        "question": "Write a menu driven program to perform various file operations. Accept filename from user. a) Display type of file. b) Display last modification time of file c) Display the size of file d) Delete the file",
         "language": "php",
-        "code": ""
+        "code": "<?php\nfunction file_operations($file) {\n    echo \"File Type: \" . filetype($file) . \"\\n\";\n    echo \"Last Modified: \" . date('F d Y H:i:s.', filemtime($file)) . \"\\n\";\n    echo \"File Size: \" . filesize($file) . \" bytes\\n\";\n}\n\nif ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $file = $_POST['filename'];\n    if (file_exists($file)) {\n        file_operations($file);\n        if (isset($_POST['delete'])) {\n            unlink($file);\n            echo \"File $file deleted successfully\";\n        }\n    } else {\n        echo \"File does not exist\";\n    }\n}\n?>\n<form method='post'>\n    Filename: <input type='text' name='filename'><br>\n    <input type='checkbox' name='delete'> Delete File<br>\n    <input type='submit' value='Submit'>\n</form>"
     },
     {
         "id": 136,
         "slip_no": "slip 26",
-        "question": "",
+        "question": "Consider the following entities and their relationship. Doctor (doc_no, dname, address, city, area) Hospital (hosp_no, hname, hcity) Doctor-Hospital related with many-one relationship. Create a RDB in 3NF for above and solve the following. Using above database write a script in PHP to print the Doctor visiting to the Hospital in tabular format. Accept Hospital name from user.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$servername = \"localhost\";\n$username = \"root\";\n$password = \"\";\n$dbname = \"hospital_db\";\n$conn = new mysqli($servername, $username, $password, $dbname);\nif ($conn->connect_error) { die(\"Connection failed: \" . $conn->connect_error); }\n$hospital_name = $_POST['hospital_name'];\n$sql = \"SELECT d.doc_no, d.dname FROM Doctor d JOIN Hospital h ON d.hosp_no = h.hosp_no WHERE h.hname = ?\";\n$stmt = $conn->prepare($sql);\n$stmt->bind_param(\"s\", $hospital_name);\n$stmt->execute();\n$result = $stmt->get_result();\nif ($result->num_rows > 0) {\n echo \"<table><tr><th>Doctor No</th><th>Doctor Name</th></tr>\";\n while($row = $result->fetch_assoc()) {\n echo \"<tr><td>\" . $row['doc_no'] . \"</td><td>\" . $row['dname'] . \"</td></tr>\";\n }\n echo \"</table>\";\n} else { echo \"No doctors found\"; }\n$stmt->close();\n$conn->close();\n?>"
     },
     {
         "id": 137,
         "slip_no": "slip 27",
-        "question": "",
+        "question": "Write a PHP program to read two file names from user and copy the content of first file into second file.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$sourceFile = $_POST['source'];\n$destinationFile = $_POST['destination'];\nif (file_exists($sourceFile)) {\n $content = file_get_contents($sourceFile);\n file_put_contents($destinationFile, $content);\n echo \"File copied successfully.\";\n} else {\n echo \"Source file does not exist.\";\n}\n?>"
     },
     {
         "id": 138,
         "slip_no": "slip 28",
-        "question": "",
+        "question": "Write a program to read a flat file 'student.dat', calculate the percentage and display the data from file in tabular format.(Student.dat file contains rollno, name, OS, WT, DS, Python, Java, CN)",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$file = fopen(\"student.dat\", \"r\");\nif ($file) {\n echo \"<table border='1'><tr><th>Roll No</th><th>Name</th><th>OS</th><th>WT</th><th>DS</th><th>Python</th><th>Java</th><th>CN</th><th>Percentage</th></tr>\";\n while (($line = fgets($file)) !== false) {\n $data = explode(\",\", $line);\n $total = $data[2] + $data[3] + $data[4] + $data[5] + $data[6] + $data[7];\n $percentage = $total / 6;\n echo \"<tr><td>{$data[0]}</td><td>{$data[1]}</td><td>{$data[2]}</td><td>{$data[3]}</td><td>{$data[4]}</td><td>{$data[5]}</td><td>{$data[6]}</td><td>{$data[7]}</td><td>{$percentage}%</td></tr>\";\n }\n echo \"</table>\";\n fclose($file);\n} else {\n echo \"Error opening file.\";\n}\n?>"
     },
     {
         "id": 139,
         "slip_no": "slip 29",
-        "question": "",
+        "question": "Consider the following entities and their relationships Event (eno , title , date ) Committee (cno , name, head , from_time ,to_time , status) Event and Committee have many to many relationship. Write a php script to accept title of event and modify status committee as working.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$event_title = $_POST['event_title'];\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"events_db\");\nif ($conn->connect_error) { die(\"Connection failed: \" . $conn->connect_error); }\n$sql = \"UPDATE Committee SET status = 'working' WHERE cno IN (SELECT cno FROM EventCommittee WHERE eno IN (SELECT eno FROM Event WHERE title = ?))\";\n$stmt = $conn->prepare($sql);\n$stmt->bind_param(\"s\", $event_title);\nif ($stmt->execute()) {\n echo \"Committee status updated successfully.\";\n} else {\n echo \"Error updating status.\";\n}\n$stmt->close();\n$conn->close();\n?>"
     },
     {
         "id": 140,
         "slip_no": "slip 30",
-        "question": "",
+        "question": "Consider the following entities and their relationships Student (Stud_id,name,class) Competition (c_no,c_name,type) Relationship between student and competition is many-many with attribute rank and year. Create a RDB in 3NF for the above and solve the following. Using above database write a script in PHP to accept a competition name from user and display information of student who has secured 1st rank in that competition.",
         "language": "php",
-        "code": ""
+        "code": "<?php\n$competition_name = $_POST['competition_name'];\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"competition_db\");\nif ($conn->connect_error) { die(\"Connection failed: \" . $conn->connect_error); }\n$sql = \"SELECT s.Stud_id, s.name, s.class FROM Student s JOIN CompetitionStudent cs ON s.Stud_id = cs.Stud_id JOIN Competition c ON cs.c_no = c.c_no WHERE c.c_name = ? AND cs.rank = 1\";\n$stmt = $conn->prepare($sql);\n$stmt->bind_param(\"s\", $competition_name);\n$stmt->execute();\n$result = $stmt->get_result();\nif ($result->num_rows > 0) {\n echo \"<table><tr><th>Student ID</th><th>Name</th><th>Class</th></tr>\";\n while($row = $result->fetch_assoc()) {\n echo \"<tr><td>{$row['Stud_id']}</td><td>{$row['name']}</td><td>{$row['class']}</td></tr>\";\n }\n echo \"</table>\";\n} else { echo \"No students found.\"; }\n$stmt->close();\n$conn->close();\n?>"
     }
 ]
