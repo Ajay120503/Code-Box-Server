@@ -348,5 +348,635 @@
         "question": "Write a program to implement the shell. It should display the command prompt “myshell$”. Tokenize the command line and execute the given command by creating the child process. Additionally it should interpret the following commands. myshell$ search f filename pattern :- To display first occurrence of pattern in the file.",
         "language": "c",
         "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <unistd.h>\n#include <fcntl.h>\n\nvoid searchPattern(char *filename, char *pattern) {\n    FILE *file = fopen(filename, \"r\");\n    if (file == NULL) {\n        perror(\"File not found\");\n        return;\n    }\n    char line[256];\n    int lineNumber = 0;\n    while (fgets(line, sizeof(line), file)) {\n        lineNumber++;\n        if (strstr(line, pattern)) {\n            printf(\"Pattern found in %s at line %d: %s\", filename, lineNumber, line);\n            fclose(file);\n            return;\n        }\n    }\n    printf(\"Pattern not found in %s.\\n\", filename);\n    fclose(file);\n}\n\nint main() {\n    char command[256];\n    while (1) {\n        printf(\"myshell$ \");\n        fgets(command, sizeof(command), stdin);\n        command[strcspn(command, \"\\n\")] = 0; // Remove newline character\n\n        char *args[4];\n        char *token = strtok(command, \" \");\n        int i = 0;\n\n        while (token != NULL && i < 3) {\n            args[i++] = token;\n            token = strtok(NULL, \" \");\n        }\n        args[i] = NULL;\n\n        if (strcmp(args[0], \"search\") == 0 && strcmp(args[1], \"f\") == 0 && i == 3) {\n            pid_t pid = fork();\n            if (pid < 0) {\n                perror(\"Fork failed\");\n            } else if (pid == 0) {\n                searchPattern(args[2], args[3]);\n                exit(0);\n            } else {\n                wait(NULL);\n            }\n        } else {\n            printf(\"Invalid command.\\n\");\n        }\n    }\n    return 0;\n}"
+    },
+    {
+        "id": 51,
+        "slip_no": "slip 1",
+        "question": "Write a Program to print all Prime numbers in an array of ‘n’ elements. (use command line arguments)",
+        "language": "java",
+        "code": "public class PrimeNumbers {\n    public static void main(String[] args) {\n        int n = Integer.parseInt(args[0]);\n        System.out.println(\"Prime numbers up to \" + n + \":\");\n        for (int num = 2; num <= n; num++) {\n            if (isPrime(num)) {\n                System.out.print(num + \" \");\n            }\n        }\n    }\n\n    public static boolean isPrime(int num) {\n        for (int i = 2; i <= Math.sqrt(num); i++) {\n            if (num % i == 0) {\n                return false;\n            }\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "id": 52,
+        "slip_no": "slip 1",
+        "question": "Define an abstract class Staff with protected members id and name. Define a parameterized constructor. Define one subclass OfficeStaff with member department. Create n objects of OfficeStaff and display all details.",
+        "language": "java",
+        "code": "abstract class Staff {\n    protected String id;\n    protected String name;\n\n    public Staff(String id, String name) {\n        this.id = id;\n        this.name = name;\n    }\n\n    public abstract void displayDetails();\n}\n\nclass OfficeStaff extends Staff {\n    private String department;\n\n    public OfficeStaff(String id, String name, String department) {\n        super(id, name);\n        this.department = department;\n    }\n\n    @Override\n    public void displayDetails() {\n        System.out.println(\"ID: \" + id + \", Name: \" + name + \", Department: \" + department);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        OfficeStaff staff1 = new OfficeStaff(\"001\", \"Alice\", \"HR\");\n        OfficeStaff staff2 = new OfficeStaff(\"002\", \"Bob\", \"IT\");\n        staff1.displayDetails();\n        staff2.displayDetails();\n    }\n}"
+    },
+    {
+        "id": 53,
+        "slip_no": "slip 2",
+        "question": "Write a program to read the First Name and Last Name of a person, his weight and height using command line arguments. Calculate the BMI Index which is defined as the individual's body mass divided by the square of their height. (Hint : BMI = Wts. In kgs / (ht)2)",
+        "language": "java",
+        "code": "public class BMI {\n    public static void main(String[] args) {\n        String firstName = args[0];\n        String lastName = args[1];\n        double weight = Double.parseDouble(args[2]);\n        double height = Double.parseDouble(args[3]);\n\n        double bmi = calculateBMI(weight, height);\n        System.out.println(firstName + \" \" + lastName + \" has a BMI of: \" + bmi);\n    }\n\n    public static double calculateBMI(double weight, double height) {\n        return weight / (height * height);\n    }\n}"
+    },
+    {
+        "id": 54,
+        "slip_no": "slip 2",
+        "question": "Define a class CricketPlayer (name,no_of_innings,no_of_times_notout, totatruns, bat_avg). Create an array of n player objects. Calculate the batting average for each player using static method avg(). Define a static sort method which sorts the array on the basis of average. Display the player details in sorted order.",
+        "language": "java",
+        "code": "class CricketPlayer {\n    String name;\n    int no_of_innings;\n    int no_of_times_notout;\n    int totalRuns;\n\n    public CricketPlayer(String name, int no_of_innings, int no_of_times_notout, int totalRuns) {\n        this.name = name;\n        this.no_of_innings = no_of_innings;\n        this.no_of_times_notout = no_of_times_notout;\n        this.totalRuns = totalRuns;\n    }\n\n    public double battingAverage() {\n        return (double) totalRuns / (no_of_innings - no_of_times_notout);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        CricketPlayer[] players = new CricketPlayer[3];\n        players[0] = new CricketPlayer(\"Player 1\", 10, 2, 500);\n        players[1] = new CricketPlayer(\"Player 2\", 8, 1, 400);\n        players[2] = new CricketPlayer(\"Player 3\", 12, 4, 600);\n\n        java.util.Arrays.sort(players, (a, b) -> Double.compare(b.battingAverage(), a.battingAverage()));\n\n        for (CricketPlayer player : players) {\n            System.out.println(player.name + \" - Average: \" + player.battingAverage());\n        }\n    }\n}"
+    },
+    {
+        "id": 55,
+        "slip_no": "slip 3",
+        "question": "Write a program to accept ‘n’ name of cities from the user and sort them in ascending order.",
+        "language": "java",
+        "code": "import java.util.Scanner;\nimport java.util.Arrays;\n\npublic class CitySorter {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the number of cities: \");\n        int n = scanner.nextInt();\n        scanner.nextLine(); // Consume newline\n\n        String[] cities = new String[n];\n        for (int i = 0; i < n; i++) {\n            System.out.print(\"Enter city \" + (i + 1) + \": \");\n            cities[i] = scanner.nextLine();\n        }\n\n        Arrays.sort(cities);\n        System.out.println(\"Cities in ascending order:\");\n        for (String city : cities) {\n            System.out.println(city);\n        }\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 56,
+        "slip_no": "slip 3",
+        "question": "Define a class patient (patient_name, patient_age, patient_oxy_level, patient_HRCT_report). Create an object of patient. Handle appropriate exception while patient oxygen level less than 95% and HRCT scan report greater than 10, then throw user defined Exception “Patient is Covid Positive(+) and Need to Hospitalized” otherwise display its information.",
+        "language": "java",
+        "code": "class Patient {\n    String patient_name;\n    int patient_age;\n    double patient_oxy_level;\n    double patient_HRCT_report;\n\n    public Patient(String name, int age, double oxyLevel, double hrctReport) {\n        this.patient_name = name;\n        this.patient_age = age;\n        this.patient_oxy_level = oxyLevel;\n        this.patient_HRCT_report = hrctReport;\n    }\n\n    public void checkPatient() throws Exception {\n        if (patient_oxy_level < 95 && patient_HRCT_report > 10) {\n            throw new Exception(\"Patient is Covid Positive(+) and Need to Hospitalized\");\n        } else {\n            System.out.println(\"Patient Name: \" + patient_name + \", Age: \" + patient_age + \", Oxy Level: \" + patient_oxy_level + \", HRCT Report: \" + patient_HRCT_report);\n        }\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Patient patient = new Patient(\"John Doe\", 30, 92, 12);\n        try {\n            patient.checkPatient();\n        } catch (Exception e) {\n            System.out.println(e.getMessage());\n        }\n    }\n}"
+    },
+    {
+        "id": 57,
+        "slip_no": "slip 4",
+        "question": "Write a program to print an array after changing the rows and columns of a given two-dimensional array.",
+        "language": "java",
+        "code": "public class ArrayTranspose {\n    public static void main(String[] args) {\n        int[][] original = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};\n        int[][] transposed = new int[original[0].length][original.length];\n\n        for (int i = 0; i < original.length; i++) {\n            for (int j = 0; j < original[0].length; j++) {\n                transposed[j][i] = original[i][j];\n            }\n        }\n\n        System.out.println(\"Transposed Array:\");\n        for (int[] row : transposed) {\n            for (int val : row) {\n                System.out.print(val + \" \");\n            }\n            System.out.println();\n        }\n    }\n}"
+    },
+    {
+        "id": 58,
+        "slip_no": "slip 4",
+        "question": "Write a program to design a screen using Awt that will take a user name and password. If the user name and password are not same, raise an Exception with appropriate message. User can have 3 login chances only. Use clear button to clear the TextFields.",
+        "language": "java",
+        "code": "import java.awt.*;\nimport java.awt.event.*;\n\npublic class LoginScreen {\n    private static int loginAttempts = 0;\n\n    public static void main(String[] args) {\n        Frame frame = new Frame(\"Login Screen\");\n        Label labelUser = new Label(\"Username:\");\n        Label labelPass = new Label(\"Password:\");\n        TextField userField = new TextField();\n        TextField passField = new TextField();\n        passField.setEchoChar('*');\n        Button loginButton = new Button(\"Login\");\n        Button clearButton = new Button(\"Clear\");\n        TextArea resultArea = new TextArea();\n\n        frame.setLayout(new GridLayout(4, 2));\n        frame.add(labelUser);\n        frame.add(userField);\n        frame.add(labelPass);\n        frame.add(passField);\n        frame.add(loginButton);\n        frame.add(clearButton);\n        frame.add(resultArea);\n\n        loginButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                String username = userField.getText();\n                String password = passField.getText();\n\n                if (loginAttempts < 3) {\n                    if (!username.equals(password)) {\n                        loginAttempts++;\n                        resultArea.setText(\"Login Failed. Attempts: \" + loginAttempts);\n                    } else {\n                        resultArea.setText(\"Login Successful!\");\n                    }\n                } else {\n                    resultArea.setText(\"Maximum login attempts exceeded.\");\n                }\n            }\n        });\n\n        clearButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                userField.setText(\"\");\n                passField.setText(\"\");\n                resultArea.setText(\"\");\n            }\n        });\n\n        frame.setSize(400, 300);\n        frame.setVisible(true);\n        frame.addWindowListener(new WindowAdapter() {\n            public void windowClosing(WindowEvent we) {\n                frame.dispose();\n            }\n        });\n    }\n}"
+    },
+    {
+        "id": 59,
+        "slip_no": "slip 5",
+        "question": "Write a program for multilevel inheritance such that Country is inherited from Continent. State is inherited from Country. Display the place, State, Country and Continent.",
+        "language": "java",
+        "code": "class Continent {\n    String name;\n\n    public Continent(String name) {\n        this.name = name;\n    }\n}\n\nclass Country extends Continent {\n    String countryName;\n\n    public Country(String continentName, String countryName) {\n        super(continentName);\n        this.countryName = countryName;\n    }\n}\n\nclass State extends Country {\n    String stateName;\n\n    public State(String continentName, String countryName, String stateName) {\n        super(continentName, countryName);\n        this.stateName = stateName;\n    }\n\n    public void display() {\n        System.out.println(\"Continent: \" + name + \", Country: \" + countryName + \", State: \" + stateName);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        State state = new State(\"Asia\", \"India\", \"Karnataka\");\n        state.display();\n    }\n}"
+    },
+    {
+        "id": 60,
+        "slip_no": "slip 5",
+        "question": "Write a menu driven program to perform the following operations on multidimensional array ie matrices: Addition, Multiplication, Exit.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\npublic class MatrixOperations {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the number of rows: \");\n        int rows = scanner.nextInt();\n        System.out.print(\"Enter the number of columns: \");\n        int cols = scanner.nextInt();\n\n        int[][] matrixA = new int[rows][cols];\n        int[][] matrixB = new int[rows][cols];\n\n        System.out.println(\"Enter elements of Matrix A:\");\n        inputMatrix(scanner, matrixA);\n\n        System.out.println(\"Enter elements of Matrix B:\");\n        inputMatrix(scanner, matrixB);\n\n        while (true) {\n            System.out.println(\"Menu:\\n1. Addition\\n2. Multiplication\\n3. Exit\");\n            int choice = scanner.nextInt();\n\n            switch (choice) {\n                case 1:\n                    int[][] sum = addMatrices(matrixA, matrixB);\n                    System.out.println(\"Sum of matrices:\");\n                    printMatrix(sum);\n                    break;\n                case 2:\n                    int[][] product = multiplyMatrices(matrixA, matrixB);\n                    System.out.println(\"Product of matrices:\");\n                    printMatrix(product);\n                    break;\n                case 3:\n                    System.exit(0);\n                default:\n                    System.out.println(\"Invalid choice!\");\n            }\n        }\n    }\n\n    private static void inputMatrix(Scanner scanner, int[][] matrix) {\n        for (int i = 0; i < matrix.length; i++) {\n            for (int j = 0; j < matrix[i].length; j++) {\n                matrix[i][j] = scanner.nextInt();\n            }\n        }\n    }\n\n    private static int[][] addMatrices(int[][] a, int[][] b) {\n        int[][] sum = new int[a.length][a[0].length];\n        for (int i = 0; i < a.length; i++) {\n            for (int j = 0; j < a[i].length; j++) {\n                sum[i][j] = a[i][j] + b[i][j];\n            }\n        }\n        return sum;\n    }\n\n    private static int[][] multiplyMatrices(int[][] a, int[][] b) {\n        int[][] product = new int[a.length][b[0].length];\n        for (int i = 0; i < a.length; i++) {\n            for (int j = 0; j < b[0].length; j++) {\n                for (int k = 0; k < a[0].length; k++) {\n                    product[i][j] += a[i][k] * b[k][j];\n                }\n            }\n        }\n        return product;\n    }\n\n    private static void printMatrix(int[][] matrix) {\n        for (int[] row : matrix) {\n            for (int val : row) {\n                System.out.print(val + \" \");\n            }\n            System.out.println();\n        }\n    }\n}"
+    },
+    {
+        "id": 61,
+        "slip_no": "slip 6",
+        "question": "Write a program to display the Employee(Empid, Empname, Empdesignation, Empsal) information using toString().",
+        "language": "java",
+        "code": "class Employee {\n    private int empId;\n    private String empName;\n    private String empDesignation;\n    private double empSal;\n\n    public Employee(int empId, String empName, String empDesignation, double empSal) {\n        this.empId = empId;\n        this.empName = empName;\n        this.empDesignation = empDesignation;\n        this.empSal = empSal;\n    }\n\n    @Override\n    public String toString() {\n        return \"Employee ID: \" + empId + \", Name: \" + empName + \", Designation: \" + empDesignation + \", Salary: \" + empSal;\n    }\n\n    public static void main(String[] args) {\n        Employee emp = new Employee(101, \"John Doe\", \"Developer\", 60000);\n        System.out.println(emp);\n    }\n}"
+    },
+    {
+        "id": 62,
+        "slip_no": "slip 6",
+        "question": "Create an abstract class “order” having members id, description. Create two subclasses “PurchaseOrder” and “Sales Order” having members customer name and Vendor name respectively. Define methods accept and display in all cases. Create 3 objects each of Purchase Order and Sales Order and accept and display details.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\nabstract class Order {\n    int id;\n    String description;\n\n    abstract void accept();\n    abstract void display();\n}\n\nclass PurchaseOrder extends Order {\n    String customerName;\n    Scanner scanner = new Scanner(System.in);\n\n    @Override\n    void accept() {\n        System.out.print(\"Enter Purchase Order ID: \");\n        id = scanner.nextInt();\n        scanner.nextLine();  // Consume newline\n        System.out.print(\"Enter Description: \");\n        description = scanner.nextLine();\n        System.out.print(\"Enter Customer Name: \");\n        customerName = scanner.nextLine();\n    }\n\n    @Override\n    void display() {\n        System.out.println(\"Purchase Order ID: \" + id);\n        System.out.println(\"Description: \" + description);\n        System.out.println(\"Customer Name: \" + customerName);\n    }\n}\n\nclass SalesOrder extends Order {\n    String vendorName;\n    Scanner scanner = new Scanner(System.in);\n\n    @Override\n    void accept() {\n        System.out.print(\"Enter Sales Order ID: \");\n        id = scanner.nextInt();\n        scanner.nextLine();  // Consume newline\n        System.out.print(\"Enter Description: \");\n        description = scanner.nextLine();\n        System.out.print(\"Enter Vendor Name: \");\n        vendorName = scanner.nextLine();\n    }\n\n    @Override\n    void display() {\n        System.out.println(\"Sales Order ID: \" + id);\n        System.out.println(\"Description: \" + description);\n        System.out.println(\"Vendor Name: \" + vendorName);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        PurchaseOrder[] purchaseOrders = new PurchaseOrder[3];\n        SalesOrder[] salesOrders = new SalesOrder[3];\n\n        for (int i = 0; i < 3; i++) {\n            purchaseOrders[i] = new PurchaseOrder();\n            System.out.println(\"Enter details for Purchase Order \" + (i + 1));\n            purchaseOrders[i].accept();\n        }\n\n        for (int i = 0; i < 3; i++) {\n            salesOrders[i] = new SalesOrder();\n            System.out.println(\"Enter details for Sales Order \" + (i + 1));\n            salesOrders[i].accept();\n        }\n\n        System.out.println(\"\\nDisplaying Purchase Orders:\");\n        for (PurchaseOrder order : purchaseOrders) {\n            order.display();\n        }\n\n        System.out.println(\"\\nDisplaying Sales Orders:\");\n        for (SalesOrder order : salesOrders) {\n            order.display();\n        }\n    }\n}"
+    },
+    {
+        "id": 63,
+        "slip_no": "slip 7",
+        "question": "Design a class for Bank. Bank Class should support the following operations; a. Deposit a certain amount into an account b. Withdraw a certain amount from an account c. Return a Balance value specifying the amount with details.",
+        "language": "java",
+        "code": "class Bank {\n    private double balance;\n\n    public Bank() {\n        this.balance = 0.0;\n    }\n\n    public void deposit(double amount) {\n        if (amount > 0) {\n            balance += amount;\n            System.out.println(\"Deposited: \" + amount);\n        } else {\n            System.out.println(\"Invalid deposit amount!\");\n        }\n    }\n\n    public void withdraw(double amount) {\n        if (amount > 0 && amount <= balance) {\n            balance -= amount;\n            System.out.println(\"Withdrawn: \" + amount);\n        } else {\n            System.out.println(\"Invalid withdrawal amount!\");\n        }\n    }\n\n    public void displayBalance() {\n        System.out.println(\"Current Balance: \" + balance);\n    }\n\n    public static void main(String[] args) {\n        Bank bank = new Bank();\n        bank.deposit(1000);\n        bank.withdraw(500);\n        bank.displayBalance();\n    }\n}"
+    },
+    {
+        "id": 64,
+        "slip_no": "slip 7",
+        "question": "Write a program to accept a text file from user and display the contents of a file in reverse order and change its case.",
+        "language": "java",
+        "code": "import java.io.*;\nimport java.util.*;\n\npublic class ReverseFileContents {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the file path: \");\n        String filePath = scanner.nextLine();\n\n        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {\n            List<String> lines = new ArrayList<>();\n            String line;\n\n            while ((line = br.readLine()) != null) {\n                lines.add(line.toUpperCase());\n            }\n\n            Collections.reverse(lines);\n            System.out.println(\"File Contents in Reverse Order:\");\n            for (String reversedLine : lines) {\n                System.out.println(reversedLine);\n            }\n        } catch (IOException e) {\n            System.out.println(\"Error reading file: \" + e.getMessage());\n        }\n    }\n}"
+    },
+    {
+        "id": 65,
+        "slip_no": "slip 8",
+        "question": "Create a class Sphere, to calculate the volume and surface area of sphere. (Hint : Surface area=4*3.14(r*r), Volume=(4/3)3.14(r*r*r))",
+        "language": "java",
+        "code": "class Sphere {\n    private double radius;\n\n    public Sphere(double radius) {\n        this.radius = radius;\n    }\n\n    public double calculateVolume() {\n        return (4.0 / 3.0) * Math.PI * Math.pow(radius, 3);\n    }\n\n    public double calculateSurfaceArea() {\n        return 4 * Math.PI * Math.pow(radius, 2);\n    }\n\n    public static void main(String[] args) {\n        Sphere sphere = new Sphere(5);\n        System.out.println(\"Volume of Sphere: \" + sphere.calculateVolume());\n        System.out.println(\"Surface Area of Sphere: \" + sphere.calculateSurfaceArea());\n    }\n}"
+    },
+    {
+        "id": 66,
+        "slip_no": "slip 8",
+        "question": "Design a screen to handle the Mouse Events such as MOUSE_MOVED and MOUSE_CLICKED and display the position of the Mouse_Click in a TextField.",
+        "language": "java",
+        "code": "import java.awt.*;\nimport java.awt.event.*;\n\npublic class MouseEventDemo {\n    public static void main(String[] args) {\n        Frame frame = new Frame(\"Mouse Event Example\");\n        TextField textField = new TextField();\n\n        textField.setBounds(50, 50, 200, 30);\n        frame.add(textField);\n        frame.setSize(400, 300);\n        frame.setLayout(null);\n        frame.setVisible(true);\n\n        frame.addMouseMotionListener(new MouseMotionAdapter() {\n            public void mouseMoved(MouseEvent e) {\n                textField.setText(\"Mouse Moved: \" + e.getX() + \", \" + e.getY());\n            }\n        });\n\n        frame.addMouseListener(new MouseAdapter() {\n            public void mouseClicked(MouseEvent e) {\n                textField.setText(\"Mouse Clicked: \" + e.getX() + \", \" + e.getY());\n            }\n        });\n\n        frame.addWindowListener(new WindowAdapter() {\n            public void windowClosing(WindowEvent we) {\n                System.exit(0);\n            }\n        });\n    }\n}"
+    },
+    {
+        "id": 67,
+        "slip_no": "slip 9",
+        "question": "Define a “Clock” class that does the following ; a. Accept Hours, Minutes and Seconds b. Check the validity of numbers c. Set the time to AM/PM mode. Use the necessary constructors and methods to do the above task.",
+        "language": "java",
+        "code": "class Clock {\n    private int hours;\n    private int minutes;\n    private int seconds;\n\n    public Clock(int hours, int minutes, int seconds) {\n        if (isValidTime(hours, minutes, seconds)) {\n            this.hours = hours;\n            this.minutes = minutes;\n            this.seconds = seconds;\n        } else {\n            throw new IllegalArgumentException(\"Invalid time\");\n        }\n    }\n\n    private boolean isValidTime(int hours, int minutes, int seconds) {\n        return hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60 && seconds >= 0 && seconds < 60;\n    }\n\n    public String to12HourFormat() {\n        int hour12 = hours % 12;\n        hour12 = hour12 == 0 ? 12 : hour12;\n        String ampm = hours < 12 ? \"AM\" : \"PM\";\n        return String.format(\"%02d:%02d:%02d %s\", hour12, minutes, seconds, ampm);\n    }\n\n    public static void main(String[] args) {\n        Clock clock = new Clock(14, 30, 45);\n        System.out.println(\"Time in 12-hour format: \" + clock.to12HourFormat());\n    }\n}"
+    },
+    {
+        "id": 68,
+        "slip_no": "slip 9",
+        "question": "Write a program to using marker interface create a class Product (product_id, product_name, product_cost, product_quantity) default and parameterized constructor. Create objects of class product and display the contents of each object and Also display the object count.",
+        "language": "java",
+        "code": "interface MarkerInterface {}\n\nclass Product implements MarkerInterface {\n    private static int objectCount = 0;\n    private int productId;\n    private String productName;\n    private double productCost;\n    private int productQuantity;\n\n    public Product(int productId, String productName, double productCost, int productQuantity) {\n        this.productId = productId;\n        this.productName = productName;\n        this.productCost = productCost;\n        this.productQuantity = productQuantity;\n        objectCount++;\n    }\n\n    public void display() {\n        System.out.println(\"Product ID: \" + productId);\n        System.out.println(\"Product Name: \" + productName);\n        System.out.println(\"Product Cost: \" + productCost);\n        System.out.println(\"Product Quantity: \" + productQuantity);\n    }\n\n    public static int getObjectCount() {\n        return objectCount;\n    }\n\n    public static void main(String[] args) {\n        Product p1 = new Product(1, \"Product A\", 100.0, 5);\n        Product p2 = new Product(2, \"Product B\", 200.0, 10);\n        Product p3 = new Product(3, \"Product C\", 150.0, 8);\n\n        p1.display();\n        p2.display();\n        p3.display();\n\n        System.out.println(\"Total Products Created: \" + Product.getObjectCount());\n    }\n}"
+    },
+    {
+        "id": 69,
+        "slip_no": "slip 10",
+        "question": "Write a program to find the cube of a given number using a functional interface.",
+        "language": "java",
+        "code": "import java.util.function.Function;\n\npublic class CubeCalculator {\n    public static void main(String[] args) {\n        Function<Integer, Integer> cube = x -> x * x * x;\n        int number = 3;\n        System.out.println(\"Cube of \" + number + \" is: \" + cube.apply(number));\n    }\n}"
+    },
+    {
+        "id": 70,
+        "slip_no": "slip 10",
+        "question": "Write a program to create a package name student. Define class StudentInfo with method to display information about student such as rollno, class, and percentage. Create another class StudentPer with method to find the percentage of the student. Accept student details like rollno, name, class and marks of 6 subjects from user.",
+        "language": "java",
+        "code": "package student;\n\nimport java.util.Scanner;\n\nclass StudentInfo {\n    private String rollNo;\n    private String name;\n    private String studentClass;\n    private double percentage;\n\n    public void acceptDetails() {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter Roll No: \");\n        rollNo = scanner.nextLine();\n        System.out.print(\"Enter Name: \");\n        name = scanner.nextLine();\n        System.out.print(\"Enter Class: \");\n        studentClass = scanner.nextLine();\n    }\n\n    public void displayInfo() {\n        System.out.println(\"Roll No: \" + rollNo);\n        System.out.println(\"Name: \" + name);\n        System.out.println(\"Class: \" + studentClass);\n        System.out.println(\"Percentage: \" + percentage);\n    }\n}\n\nclass StudentPer {\n    public double calculatePercentage(int[] marks) {\n        double total = 0;\n        for (int mark : marks) {\n            total += mark;\n        }\n        return total / marks.length;\n    }\n\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        StudentInfo student = new StudentInfo();\n        student.acceptDetails();\n\n        System.out.print(\"Enter marks of 6 subjects: \");\n        int[] marks = new int[6];\n        for (int i = 0; i < 6; i++) {\n            marks[i] = scanner.nextInt();\n        }\n\n        StudentPer sp = new StudentPer();\n        student.percentage = sp.calculatePercentage(marks);\n        student.displayInfo();\n    }\n}"
+    },
+    {
+        "id": 71,
+        "slip_no": "slip 11",
+        "question": "Define an interface “Operation” which has method volume( ).Define a constant PI having a value 3.142 Create a class cylinder which implements this interface (members – radius,height). Create one object and calculate the volume.",
+        "language": "java",
+        "code": "interface Operation {\n    double volume();\n    double PI = 3.142;\n}\n\nclass Cylinder implements Operation {\n    private double radius;\n    private double height;\n\n    public Cylinder(double radius, double height) {\n        this.radius = radius;\n        this.height = height;\n    }\n\n    @Override\n    public double volume() {\n        return PI * radius * radius * height;\n    }\n\n    public static void main(String[] args) {\n        Cylinder cylinder = new Cylinder(5, 10);\n        System.out.println(\"Volume of Cylinder: \" + cylinder.volume());\n    }\n}"
+    },
+    {
+        "id": 72,
+        "slip_no": "slip 11",
+        "question": "Write a program to accept the username and password from user if username and password are not same then raise \"Invalid Password\" with appropriate msg.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\npublic class UsernamePassword {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter username: \");\n        String username = scanner.nextLine();\n        System.out.print(\"Enter password: \");\n        String password = scanner.nextLine();\n\n        if (!username.equals(password)) {\n            System.out.println(\"Invalid Password\");\n        } else {\n            System.out.println(\"Access granted\");\n        }\n    }\n}"
+    },
+    {
+        "id": 73,
+        "slip_no": "slip 12",
+        "question": "Write a program to create parent class College(cno, cname, caddr) and derived class Department(dno, dname) from College. Write a necessary methods to display College details.",
+        "language": "java",
+        "code": "class College {\n    private String cno;\n    private String cname;\n    private String caddr;\n\n    public College(String cno, String cname, String caddr) {\n        this.cno = cno;\n        this.cname = cname;\n        this.caddr = caddr;\n    }\n\n    public void displayCollegeDetails() {\n        System.out.println(\"College No: \" + cno);\n        System.out.println(\"College Name: \" + cname);\n        System.out.println(\"College Address: \" + caddr);\n    }\n}\n\nclass Department extends College {\n    private String dno;\n    private String dname;\n\n    public Department(String cno, String cname, String caddr, String dno, String dname) {\n        super(cno, cname, caddr);\n        this.dno = dno;\n        this.dname = dname;\n    }\n\n    public void displayDepartmentDetails() {\n        displayCollegeDetails();\n        System.out.println(\"Department No: \" + dno);\n        System.out.println(\"Department Name: \" + dname);\n    }\n\n    public static void main(String[] args) {\n        Department dept = new Department(\"C001\", \"ABC College\", \"123 Main St\", \"D001\", \"Computer Science\");\n        dept.displayDepartmentDetails();\n    }\n}"
+    },
+    {
+        "id": 74,
+        "slip_no": "slip 12",
+        "question": "Write a java program that works as a simple calculator. Use a grid layout to arrange buttons for the digits and for the +, -, *, % operations. Add a text field to display the result.",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.*;\nimport java.awt.event.*;\n\npublic class SimpleCalculator extends JFrame implements ActionListener {\n    private JTextField textField;\n    private String operator;\n    private double num1, num2, result;\n\n    public SimpleCalculator() {\n        setTitle(\"Simple Calculator\");\n        setSize(300, 400);\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\n\n        textField = new JTextField();\n        textField.setEditable(false);\n        textField.setFont(new Font(\"Arial\", Font.PLAIN, 24));\n\n        JPanel panel = new JPanel();\n        panel.setLayout(new GridLayout(4, 4));\n\n        String[] buttonLabels = {\"7\", \"8\", \"9\", \"/\", \"4\", \"5\", \"6\", \"*\", \"1\", \"2\", \"3\", \"-\", \"C\", \"0\", \"=\", \"+\"};\n\n        for (String label : buttonLabels) {\n            JButton button = new JButton(label);\n            button.addActionListener(this);\n            panel.add(button);\n        }\n\n        add(textField, BorderLayout.NORTH);\n        add(panel);\n    }\n\n    public void actionPerformed(ActionEvent e) {\n        String command = e.getActionCommand();\n\n        if (command.charAt(0) >= '0' && command.charAt(0) <= '9') {\n            textField.setText(textField.getText() + command);\n        } else if (command.equals(\"C\")) {\n            textField.setText(\"\");\n            num1 = num2 = result = 0;\n        } else if (command.equals(\"=\")) {\n            num2 = Double.parseDouble(textField.getText());\n            switch (operator) {\n                case \"+\":\n                    result = num1 + num2;\n                    break;\n                case \"-\":\n                    result = num1 - num2;\n                    break;\n                case \"*\":\n                    result = num1 * num2;\n                    break;\n                case \"/\":\n                    result = num1 / num2;\n                    break;\n            }\n            textField.setText(String.valueOf(result));\n        } else {\n            if (!operator.isEmpty()) {\n                num1 = Double.parseDouble(textField.getText());\n            }\n            operator = command;\n            textField.setText(\"\");\n        }\n    }\n\n    public static void main(String[] args) {\n        SimpleCalculator calculator = new SimpleCalculator();\n        calculator.setVisible(true);\n    }\n}"
+    },
+    {
+        "id": 75,
+        "slip_no": "slip 13",
+        "question": "Write a program to accept a file name from command prompt, if the file exits then display number of words and lines in that file.",
+        "language": "java",
+        "code": "import java.io.BufferedReader;\nimport java.io.FileReader;\nimport java.io.IOException;\nimport java.util.Scanner;\n\npublic class FileWordLineCounter {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the file name: \");\n        String fileName = scanner.nextLine();\n\n        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {\n            String line;\n            int lineCount = 0;\n            int wordCount = 0;\n\n            while ((line = br.readLine()) != null) {\n                lineCount++;\n                String[] words = line.split(\"\\s+\");\n                wordCount += words.length;\n            }\n\n            System.out.println(\"Number of lines: \" + lineCount);\n            System.out.println(\"Number of words: \" + wordCount);\n        } catch (IOException e) {\n            System.out.println(\"File not found: \" + e.getMessage());\n        }\n    }\n}"
+    },
+    {
+        "id": 76,
+        "slip_no": "slip 13",
+        "question": "Write a program to display the system date and time in various formats shown below: Current date is : 31/08/2021 Current date is : 08-31-2021 Current date is : Tuesday August 31 2021 Current date and time is : Fri August 31 15: 25: 59 IST 2021 Current date and time is : 31/08/21 15: 25: 59 PM +0530",
+        "language": "java",
+        "code": "import java.text.SimpleDateFormat;\nimport java.util.Date;\nimport java.util.TimeZone;\n\npublic class DateTimeDisplay {\n    public static void main(String[] args) {\n        Date date = new Date();\n        SimpleDateFormat sdf1 = new SimpleDateFormat(\"dd/MM/yyyy\");\n        SimpleDateFormat sdf2 = new SimpleDateFormat(\"MM-dd-yyyy\");\n        SimpleDateFormat sdf3 = new SimpleDateFormat(\"EEEE MMMM dd yyyy\");\n        SimpleDateFormat sdf4 = new SimpleDateFormat(\"EEE MMMM dd HH:mm:ss z yyyy\");\n        SimpleDateFormat sdf5 = new SimpleDateFormat(\"dd/MM/yy hh:mm:ss a z\");\n        sdf5.setTimeZone(TimeZone.getDefault());\n\n        System.out.println(\"Current date is : \" + sdf1.format(date));\n        System.out.println(\"Current date is : \" + sdf2.format(date));\n        System.out.println(\"Current date is : \" + sdf3.format(date));\n        System.out.println(\"Current date and time is : \" + sdf4.format(date));\n        System.out.println(\"Current date and time is : \" + sdf5.format(date));\n    }\n}"
+    },
+    {
+        "id": 77,
+        "slip_no": "slip 14",
+        "question": "Write a program to accept a number from the user, if number is zero then throw user defined exception “Number is 0” otherwise check whether no is prime or not (Use static keyword).",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\nclass ZeroException extends Exception {\n    public ZeroException(String message) {\n        super(message);\n    }\n}\n\npublic class PrimeChecker {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter a number: \");\n        int number = scanner.nextInt();\n\n        try {\n            checkNumber(number);\n        } catch (ZeroException e) {\n            System.out.println(e.getMessage());\n        }\n    }\n\n    static void checkNumber(int number) throws ZeroException {\n        if (number == 0) {\n            throw new ZeroException(\"Number is 0\");\n        } else {\n            if (isPrime(number)) {\n                System.out.println(number + \" is a prime number.\");\n            } else {\n                System.out.println(number + \" is not a prime number.\");\n            }\n        }\n    }\n\n    static boolean isPrime(int num) {\n        if (num <= 1) return false;\n        for (int i = 2; i <= Math.sqrt(num); i++) {\n            if (num % i == 0) return false;\n        }\n        return true;\n    }\n}"
+    },
+    {
+        "id": 78,
+        "slip_no": "slip 14",
+        "question": "Write a Java program to create a Package “SY” which has a class SYMarks (members – ComputerTotal, MathsTotal, and ElectronicsTotal). Create another package TY which has a class TYMarks (members – Theory, Practicals). Create ‘n’ objects of Student class (having rollNumber, name, SYMarks and TYMarks). Add the marks of SY and TY computer subjects and calculate the Grade (‘A’ for >= 70, ‘B’ for >= 60 ‘C’ for >= 50, Pass Class for > =40 else‘FAIL’) and display the result of the student in proper format.",
+        "language": "java",
+        "code": "package SY;\n\npublic class SYMarks {\n    public int ComputerTotal;\n    public int MathsTotal;\n    public int ElectronicsTotal;\n\n    public SYMarks(int compTotal, int mathTotal, int elecTotal) {\n        this.ComputerTotal = compTotal;\n        this.MathsTotal = mathTotal;\n        this.ElectronicsTotal = elecTotal;\n    }\n}\n\npackage TY;\n\npublic class TYMarks {\n    public int Theory;\n    public int Practicals;\n\n    public TYMarks(int theory, int practicals) {\n        this.Theory = theory;\n        this.Practicals = practicals;\n    }\n}\n\nimport SY.SYMarks;\nimport TY.TYMarks;\nimport java.util.ArrayList;\nimport java.util.List;\n\nclass Student {\n    private String rollNumber;\n    private String name;\n    private SYMarks syMarks;\n    private TYMarks tyMarks;\n\n    public Student(String rollNumber, String name, SYMarks syMarks, TYMarks tyMarks) {\n        this.rollNumber = rollNumber;\n        this.name = name;\n        this.syMarks = syMarks;\n        this.tyMarks = tyMarks;\n    }\n\n    public void displayResult() {\n        int totalMarks = syMarks.ComputerTotal + tyMarks.Theory;\n        char grade;\n        if (totalMarks >= 70) grade = 'A';\n        else if (totalMarks >= 60) grade = 'B';\n        else if (totalMarks >= 50) grade = 'C';\n        else if (totalMarks >= 40) grade = 'D';\n        else grade = 'F';\n\n        System.out.println(\"Student: \" + name + \", Roll No: \" + rollNumber + \", Grade: \" + grade);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Student> students = new ArrayList<>();\n        students.add(new Student(\"101\", \"John\", new SYMarks(70, 80, 90), new TYMarks(75, 85)));\n        students.add(new Student(\"102\", \"Jane\", new SYMarks(65, 55, 60), new TYMarks(70, 75)));\n\n        for (Student student : students) {\n            student.displayResult();\n        }\n    }\n}"
+    },
+    {
+        "id": 79,
+        "slip_no": "slip 15",
+        "question": "Accept the names of two files and copy the contents of the first to the second. First file having Book name and Author name in file.",
+        "language": "java",
+        "code": "import java.io.*;\nimport java.util.Scanner;\n\npublic class FileCopy {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the source file name: \");\n        String sourceFileName = scanner.nextLine();\n        System.out.print(\"Enter the destination file name: \");\n        String destinationFileName = scanner.nextLine();\n\n        try (BufferedReader br = new BufferedReader(new FileReader(sourceFileName));\n             BufferedWriter bw = new BufferedWriter(new FileWriter(destinationFileName))) {\n            String line;\n            while ((line = br.readLine()) != null) {\n                bw.write(line);\n                bw.newLine();\n            }\n            System.out.println(\"Contents copied successfully.\");\n        } catch (IOException e) {\n            System.out.println(\"Error: \" + e.getMessage());\n        }\n    }\n}"
+    },
+    {
+        "id": 80,
+        "slip_no": "slip 15",
+        "question": "Write a program to define a class Account having members custname, accno. Define default and parameterized constructor. Create a subclass called SavingAccount with member savingbal, minbal. Create a derived class AccountDetail that extends the class SavingAccount with members, depositamt and withdrawalamt. Write a appropriate method to display customer details.",
+        "language": "java",
+        "code": "class Account {\n    protected String custname;\n    protected String accno;\n\n    public Account() {}\n\n    public Account(String custname, String accno) {\n        this.custname = custname;\n        this.accno = accno;\n    }\n}\n\nclass SavingAccount extends Account {\n    protected double savingbal;\n    protected double minbal;\n\n    public SavingAccount(String custname, String accno, double savingbal, double minbal) {\n        super(custname, accno);\n        this.savingbal = savingbal;\n        this.minbal = minbal;\n    }\n}\n\nclass AccountDetail extends SavingAccount {\n    private double depositamt;\n    private double withdrawalamt;\n\n    public AccountDetail(String custname, String accno, double savingbal, double minbal, double depositamt, double withdrawalamt) {\n        super(custname, accno, savingbal, minbal);\n        this.depositamt = depositamt;\n        this.withdrawalamt = withdrawalamt;\n    }\n\n    public void displayCustomerDetails() {\n        System.out.println(\"Customer Name: \" + custname);\n        System.out.println(\"Account No: \" + accno);\n        System.out.println(\"Saving Balance: \" + savingbal);\n        System.out.println(\"Minimum Balance: \" + minbal);\n        System.out.println(\"Deposit Amount: \" + depositamt);\n        System.out.println(\"Withdrawal Amount: \" + withdrawalamt);\n    }\n\n    public static void main(String[] args) {\n        AccountDetail accDetail = new AccountDetail(\"John Doe\", \"ACC12345\", 1000.00, 500.00, 200.00, 150.00);\n        accDetail.displayCustomerDetails();\n    }\n}"
+    },
+    {
+        "id": 81,
+        "slip_no": "slip 16",
+        "question": "Write a program to find the Square of given number using function interface.",
+        "language": "java",
+        "code": "import java.util.function.Function;\n\npublic class SquareCalculator {\n    public static void main(String[] args) {\n        Function<Integer, Integer> square = (n) -> n * n;\n        int number = 5; // Example number\n        System.out.println(\"Square of \" + number + \" is: \" + square.apply(number));\n    }\n}"
+    },
+    {
+        "id": 82,
+        "slip_no": "slip 16",
+        "question": "Write a program to design a screen using Awt that, File has option new, open, save, show about, exit and another two mean options Edit and About.",
+        "language": "java",
+        "code": "import java.awt.*;\nimport java.awt.event.*;\n\npublic class MenuExample extends Frame implements ActionListener {\n    public MenuExample() {\n        MenuBar mb = new MenuBar();\n        Menu fileMenu = new Menu(\"File\");\n        fileMenu.add(new MenuItem(\"New\"));\n        fileMenu.add(new MenuItem(\"Open\"));\n        fileMenu.add(new MenuItem(\"Save\"));\n        fileMenu.add(new MenuItem(\"Show About\"));\n        fileMenu.add(new MenuItem(\"Exit\"));\n\n        Menu editMenu = new Menu(\"Edit\");\n        editMenu.add(new MenuItem(\"Edit Option 1\"));\n        editMenu.add(new MenuItem(\"Edit Option 2\"));\n\n        mb.add(fileMenu);\n        mb.add(editMenu);\n        setMenuBar(mb);\n\n        setTitle(\"AWT Menu Example\");\n        setSize(400, 300);\n        setVisible(true);\n\n        addWindowListener(new WindowAdapter() {\n            public void windowClosing(WindowEvent we) {\n                System.exit(0);\n            }\n        });\n    }\n\n    public void actionPerformed(ActionEvent e) {\n        // Handle menu actions here\n    }\n\n    public static void main(String[] args) {\n        new MenuExample();\n    }\n}"
+    },
+    {
+        "id": 83,
+        "slip_no": "slip 17",
+        "question": "Design a Super class Customer (name, phone-number). Derive a class Depositor(accno, balance) from Customer. Again, derive a class Borrower (loan-no, loan-amt) from Depositor. Write necessary member functions to read and display the details of ‘n’ customers.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\nclass Customer {\n    String name;\n    String phoneNumber;\n\n    public Customer(String name, String phoneNumber) {\n        this.name = name;\n        this.phoneNumber = phoneNumber;\n    }\n\n    public void displayCustomerDetails() {\n        System.out.println(\"Name: \" + name);\n        System.out.println(\"Phone Number: \" + phoneNumber);\n    }\n}\n\nclass Depositor extends Customer {\n    String accno;\n    double balance;\n\n    public Depositor(String name, String phoneNumber, String accno, double balance) {\n        super(name, phoneNumber);\n        this.accno = accno;\n        this.balance = balance;\n    }\n\n    public void displayDepositorDetails() {\n        displayCustomerDetails();\n        System.out.println(\"Account Number: \" + accno);\n        System.out.println(\"Balance: \" + balance);\n    }\n}\n\nclass Borrower extends Depositor {\n    String loanNo;\n    double loanAmt;\n\n    public Borrower(String name, String phoneNumber, String accno, double balance, String loanNo, double loanAmt) {\n        super(name, phoneNumber, accno, balance);\n        this.loanNo = loanNo;\n        this.loanAmt = loanAmt;\n    }\n\n    public void displayBorrowerDetails() {\n        displayDepositorDetails();\n        System.out.println(\"Loan Number: \" + loanNo);\n        System.out.println(\"Loan Amount: \" + loanAmt);\n    }\n}\n\npublic class CustomerDetails {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter number of customers: \");\n        int n = scanner.nextInt();\n        scanner.nextLine(); // Consume newline\n        Borrower[] borrowers = new Borrower[n];\n\n        for (int i = 0; i < n; i++) {\n            System.out.println(\"Enter details for customer \" + (i + 1) + \":\");\n            System.out.print(\"Name: \");\n            String name = scanner.nextLine();\n            System.out.print(\"Phone Number: \");\n            String phone = scanner.nextLine();\n            System.out.print(\"Account Number: \");\n            String accno = scanner.nextLine();\n            System.out.print(\"Balance: \");\n            double balance = scanner.nextDouble();\n            scanner.nextLine(); // Consume newline\n            System.out.print(\"Loan Number: \");\n            String loanNo = scanner.nextLine();\n            System.out.print(\"Loan Amount: \");\n            double loanAmt = scanner.nextDouble();\n            scanner.nextLine(); // Consume newline\n\n            borrowers[i] = new Borrower(name, phone, accno, balance, loanNo, loanAmt);\n        }\n\n        System.out.println(\"\\nCustomer Details:\\\");\n        for (Borrower borrower : borrowers) {\n            borrower.displayBorrowerDetails();\n            System.out.println();\n        }\n    }\n}"
+    },
+    {
+        "id": 84,
+        "slip_no": "slip 17",
+        "question": "Write Java program to design three text boxes and two buttons using swing. Enter different strings in first and second textbox. On clicking the First command button, concatenation of two strings should be displayed in third text box and on clicking second command button, reverse of string should display in third text box.",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.event.*;\n\npublic class StringManipulator {\n    public static void main(String[] args) {\n        JFrame frame = new JFrame(\"String Manipulator\");\n        JTextField text1 = new JTextField(15);\n        JTextField text2 = new JTextField(15);\n        JTextField result = new JTextField(15);\n        JButton concatButton = new JButton(\"Concatenate\");\n        JButton reverseButton = new JButton(\"Reverse\");\n\n        concatButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                String concatenated = text1.getText() + text2.getText();\n                result.setText(concatenated);\n            }\n        });\n\n        reverseButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                String reversed = new StringBuilder(text1.getText()).reverse().toString();\n                result.setText(reversed);\n            }\n        });\n\n        JPanel panel = new JPanel();\n        panel.add(text1);\n        panel.add(text2);\n        panel.add(concatButton);\n        panel.add(reverseButton);\n        panel.add(result);\n\n        frame.add(panel);\n        frame.setSize(400, 200);\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.setVisible(true);\n    }\n}"
+    },
+    {
+        "id": 85,
+        "slip_no": "slip 18",
+        "question": "Write a program to implement Border Layout Manager.",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.*;\n\npublic class BorderLayoutExample {\n    public static void main(String[] args) {\n        JFrame frame = new JFrame(\"Border Layout Example\");\n        frame.setLayout(new BorderLayout());\n\n        frame.add(new JButton(\"North\"), BorderLayout.NORTH);\n        frame.add(new JButton(\"South\"), BorderLayout.SOUTH);\n        frame.add(new JButton(\"East\"), BorderLayout.EAST);\n        frame.add(new JButton(\"West\"), BorderLayout.WEST);\n        frame.add(new JButton(\"Center\"), BorderLayout.CENTER);\n\n        frame.setSize(400, 300);\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.setVisible(true);\n    }\n}"
+    },
+    {
+        "id": 86,
+        "slip_no": "slip 18",
+        "question": "Define a class CricketPlayer (name, no_of_innings, no_of_times_notout, totalruns, bat_avg). Create an array of n player objects. Calculate the batting average for each player using static method avg(). Define a static sort method which sorts the array on the basis of average. Display the player details in sorted order.",
+        "language": "java",
+        "code": "class CricketPlayer {\n    String name;\n    int noOfInnings;\n    int noOfTimesNotOut;\n    int totalRuns;\n\n    public CricketPlayer(String name, int noOfInnings, int noOfTimesNotOut, int totalRuns) {\n        this.name = name;\n        this.noOfInnings = noOfInnings;\n        this.noOfTimesNotOut = noOfTimesNotOut;\n        this.totalRuns = totalRuns;\n    }\n\n    public double avg() {\n        return (double) totalRuns / noOfInnings;\n    }\n\n    public String toString() {\n        return \"Name: \" + name + \", Innings: \" + noOfInnings + \", Not Out: \" + noOfTimesNotOut + \", Total Runs: \" + totalRuns + \", Average: \" + avg();\n    }\n}\n\npublic class CricketPlayerDemo {\n    public static void sortByAvg(CricketPlayer[] players) {\n        for (int i = 0; i < players.length - 1; i++) {\n            for (int j = i + 1; j < players.length; j++) {\n                if (players[i].avg() < players[j].avg()) {\n                    CricketPlayer temp = players[i];\n                    players[i] = players[j];\n                    players[j] = temp;\n                }\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        CricketPlayer[] players = new CricketPlayer[3];\n        players[0] = new CricketPlayer(\"Player1\", 10, 3, 450);\n        players[1] = new CricketPlayer(\"Player2\", 12, 4, 600);\n        players[2] = new CricketPlayer(\"Player3\", 8, 2, 250);\n\n        sortByAvg(players);\n\n        System.out.println(\"Player Details in Sorted Order:\");\n        for (CricketPlayer player : players) {\n            System.out.println(player);\n        }\n    }\n}"
+    },
+    {
+        "id": 87,
+        "slip_no": "slip 19",
+        "question": "Write a program to accept the two-dimensional array from user and display the sum of its diagonal elements.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\npublic class DiagonalSum {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the size of the matrix (n x n): \");\n        int n = scanner.nextInt();\n        int[][] matrix = new int[n][n];\n\n        System.out.println(\"Enter the elements of the matrix:\");\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                matrix[i][j] = scanner.nextInt();\n            }\n        }\n\n        int sum = 0;\n        for (int i = 0; i < n; i++) {\n            sum += matrix[i][i]; // Sum of diagonal elements\n        }\n\n        System.out.println(\"Sum of diagonal elements: \" + sum);\n    }\n}"
+    },
+    {
+        "id": 88,
+        "slip_no": "slip 19",
+        "question": "Write a program which shows the combo box which includes list of T.Y.B.Sc.(Comp. Sci) subjects. Display the selected subject in a text field.",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.event.*;\n\npublic class ComboBoxExample {\n    public static void main(String[] args) {\n        JFrame frame = new JFrame(\"Combo Box Example\");\n        String[] subjects = {\"Data Structures\", \"Algorithms\", \"Database Management Systems\", \"Operating Systems\"};\n        JComboBox<String> comboBox = new JComboBox<>(subjects);\n        JTextField textField = new JTextField(20);\n\n        comboBox.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                textField.setText((String) comboBox.getSelectedItem());\n            }\n        });\n\n        JPanel panel = new JPanel();\n        panel.add(comboBox);\n        panel.add(textField);\n\n        frame.add(panel);\n        frame.setSize(300, 200);\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.setVisible(true);\n    }\n}"
+    },
+    {
+        "id": 89,
+        "slip_no": "slip 20",
+        "question": "Write a Program to illustrate multilevel Inheritance such that country is inherited from continent. State is inherited from country. Display the place, state, country, and continent.",
+        "language": "java",
+        "code": "class Continent {\n    String name;\n\n    public Continent(String name) {\n        this.name = name;\n    }\n}\n\nclass Country extends Continent {\n    String countryName;\n\n    public Country(String continentName, String countryName) {\n        super(continentName);\n        this.countryName = countryName;\n    }\n}\n\nclass State extends Country {\n    String stateName;\n\n    public State(String continentName, String countryName, String stateName) {\n        super(continentName, countryName);\n        this.stateName = stateName;\n    }\n}\n\npublic class MultilevelInheritance {\n    public static void main(String[] args) {\n        State state = new State(\"Asia\", \"India\", \"Maharashtra\");\n        System.out.println(\"Continent: \" + state.name);\n        System.out.println(\"Country: \" + state.countryName);\n        System.out.println(\"State: \" + state.stateName);\n    }\n}"
+    },
+    {
+        "id": 90,
+        "slip_no": "slip 20",
+        "question": "Write a package for Operation, which has two classes, Addition and Maximum. Addition has two methods add() and subtract(), which are used to add two integers and subtract two float values respectively. Maximum has a method max() to display the maximum of two integers.",
+        "language": "java",
+        "code": "package Operation;\n\npublic class Addition {\n    public int add(int a, int b) {\n        return a + b;\n    }\n\n    public float subtract(float a, float b) {\n        return a - b;\n    }\n}\n\npublic class Maximum {\n    public int max(int a, int b) {\n        return (a > b) ? a : b;\n    }\n}\n\n// Main class to test the package\nimport Operation.*;\n\nclass TestOperations {\n    public static void main(String[] args) {\n        Addition addition = new Addition();\n        Maximum maximum = new Maximum();\n\n        System.out.println(\"Addition: \" + addition.add(5, 3));\n        System.out.println(\"Subtraction: \" + addition.subtract(5.5f, 3.2f));\n        System.out.println(\"Maximum: \" + maximum.max(5, 10));\n    }\n}"
+    },
+    {
+        "id": 91,
+        "slip_no": "slip 21",
+        "question": "Define a class MyDate(Day, Month, year) with methods to accept and display a MyDate object. Accept date as dd, mm, yyyy. Throw user defined exception 'InvalidDateException' if the date is invalid.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\nclass InvalidDateException extends Exception {\n    public InvalidDateException(String message) {\n        super(message);\n    }\n}\n\nclass MyDate {\n    private int day, month, year;\n\n    public MyDate(int day, int month, int year) throws InvalidDateException {\n        if (day < 1 || day > 31 || month < 1 || month > 12) {\n            throw new InvalidDateException(\"Invalid date: \" + day + \"/\" + month + \"/\" + year);\n        }\n        this.day = day;\n        this.month = month;\n        this.year = year;\n    }\n\n    public void display() {\n        System.out.println(\"Date: \" + day + \"/\" + month + \"/\" + year);\n    }\n}\n\npublic class DateTest {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter date (dd mm yyyy): \");\n        int day = scanner.nextInt();\n        int month = scanner.nextInt();\n        int year = scanner.nextInt();\n        try {\n            MyDate date = new MyDate(day, month, year);\n            date.display();\n        } catch (InvalidDateException e) {\n            System.out.println(e.getMessage());\n        }\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 92,
+        "slip_no": "slip 21",
+        "question": "Create an employee class(id, name, deptname, salary). Define a default and parameterized constructor. Use ‘this’ keyword to initialize instance variables. Keep a count of objects created. Create objects using parameterized constructor and display the object count after each object is created. (Use static member and method). Also display the contents of each object.",
+        "language": "java",
+        "code": "class Employee {\n    private int id;\n    private String name;\n    private String deptName;\n    private double salary;\n    private static int objectCount = 0;\n\n    public Employee() {\n        objectCount++;\n    }\n\n    public Employee(int id, String name, String deptName, double salary) {\n        this.id = id;\n        this.name = name;\n        this.deptName = deptName;\n        this.salary = salary;\n        objectCount++;\n        displayCount();\n    }\n\n    public void displayCount() {\n        System.out.println(\"Total Employee Objects Created: \" + objectCount);\n    }\n\n    public void display() {\n        System.out.println(\"ID: \" + id + \", Name: \" + name + \", Department: \" + deptName + \", Salary: \" + salary);\n    }\n}\n\npublic class EmployeeTest {\n    public static void main(String[] args) {\n        Employee emp1 = new Employee(1, \"Alice\", \"HR\", 50000);\n        emp1.display();\n        Employee emp2 = new Employee(2, \"Bob\", \"IT\", 60000);\n        emp2.display();\n        Employee emp3 = new Employee(3, \"Charlie\", \"Finance\", 55000);\n        emp3.display();\n    }\n}"
+    },
+    {
+        "id": 93,
+        "slip_no": "slip 22",
+        "question": "Write a program to create an abstract class named Shape that contains two integers and an empty method named printArea(). Provide three classes named Rectangle, Triangle and Circle such that each one of the classes extends the class Shape. Each one of the classes contain only the method printArea() that prints the area of the given shape. (use method overriding).",
+        "language": "java",
+        "code": "abstract class Shape {\n    protected int dimension1, dimension2;\n\n    public Shape(int dimension1, int dimension2) {\n        this.dimension1 = dimension1;\n        this.dimension2 = dimension2;\n    }\n\n    abstract void printArea();\n}\n\nclass Rectangle extends Shape {\n    public Rectangle(int length, int width) {\n        super(length, width);\n    }\n\n    @Override\n    void printArea() {\n        System.out.println(\"Area of Rectangle: \" + (dimension1 * dimension2));\n    }\n}\n\nclass Triangle extends Shape {\n    public Triangle(int base, int height) {\n        super(base, height);\n    }\n\n    @Override\n    void printArea() {\n        System.out.println(\"Area of Triangle: \" + (0.5 * dimension1 * dimension2));\n    }\n}\n\nclass Circle extends Shape {\n    public Circle(int radius) {\n        super(radius, 0);\n    }\n\n    @Override\n    void printArea() {\n        System.out.println(\"Area of Circle: \" + (Math.PI * dimension1 * dimension1));\n    }\n}\n\npublic class ShapeTest {\n    public static void main(String[] args) {\n        Shape rect = new Rectangle(10, 5);\n        rect.printArea();\n        Shape tri = new Triangle(10, 5);\n        tri.printArea();\n        Shape circle = new Circle(7);\n        circle.printArea();\n    }\n}"
+    },
+    {
+        "id": 94,
+        "slip_no": "slip 22",
+        "question": "Write a program that handles all mouse events and shows the event name at the center of the Window, red in color when a mouse event is fired. (Use adapter classes).",
+        "language": "java",
+        "code": "import java.awt.*;\nimport java.awt.event.*;\n\npublic class MouseEventExample extends Frame {\n    private Label label;\n\n    public MouseEventExample() {\n        setTitle(\"Mouse Events\");\n        setSize(400, 400);\n        setLayout(null);\n\n        label = new Label(\"Mouse Event: \", Label.CENTER);\n        label.setBounds(100, 150, 200, 30);\n        label.setFont(new Font(\"Arial\", Font.BOLD, 16));\n        label.setForeground(Color.RED);\n        add(label);\n\n        addMouseListener(new MouseAdapter() {\n            @Override\n            public void mouseClicked(MouseEvent e) {\n                label.setText(\"Mouse Clicked\");\n            }\n\n            @Override\n            public void mouseEntered(MouseEvent e) {\n                label.setText(\"Mouse Entered\");\n            }\n\n            @Override\n            public void mouseExited(MouseEvent e) {\n                label.setText(\"Mouse Exited\");\n            }\n        });\n\n        addWindowListener(new WindowAdapter() {\n            public void windowClosing(WindowEvent we) {\n                System.exit(0);\n            }\n        });\n\n        setVisible(true);\n    }\n\n    public static void main(String[] args) {\n        new MouseEventExample();\n    }\n}"
+    },
+    {
+        "id": 95,
+        "slip_no": "slip 23",
+        "question": "Define a class MyNumber having one private int data member. Write a default constructor to initialize it to 0 and another constructor to initialize it to a value (Use this). Write methods isNegative, isPositive, isZero, isOdd, isEven. Create an object in main. Use command line arguments to pass a value to the Object.",
+        "language": "java",
+        "code": "public class MyNumber {\n    private int number;\n\n    public MyNumber() {\n        this(0);\n    }\n\n    public MyNumber(int number) {\n        this.number = number;\n    }\n\n    public boolean isNegative() {\n        return number < 0;\n    }\n\n    public boolean isPositive() {\n        return number > 0;\n    }\n\n    public boolean isZero() {\n        return number == 0;\n    }\n\n    public boolean isOdd() {\n        return number % 2 != 0;\n    }\n\n    public boolean isEven() {\n        return number % 2 == 0;\n    }\n}\n\npublic class MyNumberTest {\n    public static void main(String[] args) {\n        if (args.length > 0) {\n            int value = Integer.parseInt(args[0]);\n            MyNumber myNum = new MyNumber(value);\n            System.out.println(\"Number: \" + value);\n            System.out.println(\"Is Negative: \" + myNum.isNegative());\n            System.out.println(\"Is Positive: \" + myNum.isPositive());\n            System.out.println(\"Is Zero: \" + myNum.isZero());\n            System.out.println(\"Is Odd: \" + myNum.isOdd());\n            System.out.println(\"Is Even: \" + myNum.isEven());\n        } else {\n            System.out.println(\"Please provide a number as command line argument.\");\n        }\n    }\n}"
+    },
+    {
+        "id": 96,
+        "slip_no": "slip 23",
+        "question": "Write a simple currency converter, as shown in the figure. User can enter the amount of 'Singapore Dollars', 'US Dollars', or 'Euros', in floating-point number. The converted values shall be displayed to 2 decimal places. Assume that 1 USD = 1.41 SGD, 1 USD = 0.92 Euro, 1 SGD = 0.65 Euro.",
+        "language": "java",
+        "code": "import java.util.Scanner;\n\npublic class CurrencyConverter {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.println(\"Enter amount in Singapore Dollars (SGD):\");\n        double sgd = scanner.nextDouble();\n        System.out.println(\"Enter amount in US Dollars (USD):\");\n        double usd = scanner.nextDouble();\n        System.out.println(\"Enter amount in Euros:\");\n        double euro = scanner.nextDouble();\n\n        double convertedToUSDFromSGD = sgd / 1.41;\n        double convertedToEuroFromUSD = usd * 0.92;\n        double convertedToSGDFromEuro = euro / 0.65;\n\n        System.out.printf(\"%.2f SGD = %.2f USD\\n\", sgd, convertedToUSDFromSGD);\n        System.out.printf(\"%.2f USD = %.2f Euro\\n\", usd, convertedToEuroFromUSD);\n        System.out.printf(\"%.2f Euro = %.2f SGD\\n\", euro, convertedToSGDFromEuro);\n\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 97,
+        "slip_no": "slip 24",
+        "question": "Create an abstract class 'Bank' with an abstract method 'getBalance'. Rs.100, Rs.150 and Rs.200 are deposited in banks A, B and C respectively. 'BankA', 'BankB' and 'BankC' are subclasses of class 'Bank', each having a method named 'getBalance'. Call this method by creating an object of each of the three classes.",
+        "language": "java",
+        "code": "abstract class Bank {\n    abstract void getBalance();\n}\n\nclass BankA extends Bank {\n    private int balance = 100;\n\n    @Override\n    void getBalance() {\n        System.out.println(\"Bank A Balance: Rs. \" + balance);\n    }\n}\n\nclass BankB extends Bank {\n    private int balance = 150;\n\n    @Override\n    void getBalance() {\n        System.out.println(\"Bank B Balance: Rs. \" + balance);\n    }\n}\n\nclass BankC extends Bank {\n    private int balance = 200;\n\n    @Override\n    void getBalance() {\n        System.out.println(\"Bank C Balance: Rs. \" + balance);\n    }\n}\n\npublic class BankTest {\n    public static void main(String[] args) {\n        Bank bankA = new BankA();\n        Bank bankB = new BankB();\n        Bank bankC = new BankC();\n\n        bankA.getBalance();\n        bankB.getBalance();\n        bankC.getBalance();\n    }\n}"
+    },
+    {
+        "id": 98,
+        "slip_no": "slip 24",
+        "question": "Program that displays three concentric circles where ever the user clicks the mouse on a frame. The program must exit when user clicks ‘X’ on the frame.",
+        "language": "java",
+        "code": "import java.awt.*;\nimport java.awt.event.*;\n\npublic class ConcentricCircles extends Frame {\n    public ConcentricCircles() {\n        setTitle(\"Concentric Circles\");\n        setSize(400, 400);\n        setVisible(true);\n\n        addMouseListener(new MouseAdapter() {\n            public void mouseClicked(MouseEvent e) {\n                Graphics g = getGraphics();\n                int x = e.getX();\n                int y = e.getY();\n                drawCircles(g, x, y);\n            }\n        });\n\n        addWindowListener(new WindowAdapter() {\n            public void windowClosing(WindowEvent we) {\n                System.exit(0);\n            }\n        });\n    }\n\n    private void drawCircles(Graphics g, int x, int y) {\n        for (int radius = 10; radius <= 30; radius += 10) {\n            g.drawOval(x - radius, y - radius, 2 * radius, 2 * radius);\n        }\n    }\n\n    public static void main(String[] args) {\n        new ConcentricCircles();\n    }\n}"
+    },
+    {
+        "id": 99,
+        "slip_no": "slip 25",
+        "question": "Create a class Student(rollno, name, class, per), to read student information from the console and display them (Using BufferedReader class).",
+        "language": "java",
+        "code": "import java.io.*;\n\nclass Student {\n    private int rollNo;\n    private String name;\n    private String className;\n    private float percentage;\n\n    public Student(int rollNo, String name, String className, float percentage) {\n        this.rollNo = rollNo;\n        this.name = name;\n        this.className = className;\n        this.percentage = percentage;\n    }\n\n    public void display() {\n        System.out.println(\"Roll No: \" + rollNo);\n        System.out.println(\"Name: \" + name);\n        System.out.println(\"Class: \" + className);\n        System.out.println(\"Percentage: \" + percentage + \"%\");\n    }\n}\n\npublic class StudentTest {\n    public static void main(String[] args) throws IOException {\n        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));\n        System.out.print(\"Enter Roll No: \");\n        int rollNo = Integer.parseInt(reader.readLine());\n        System.out.print(\"Enter Name: \");\n        String name = reader.readLine();\n        System.out.print(\"Enter Class: \");\n        String className = reader.readLine();\n        System.out.print(\"Enter Percentage: \");\n        float percentage = Float.parseFloat(reader.readLine());\n\n        Student student = new Student(rollNo, name, className, percentage);\n        student.display();\n    }\n}"
+    },
+    {
+        "id": 100,
+        "slip_no": "slip 25",
+        "question": "Create the following GUI screen using appropriate layout manager. Accept the name, class, hobbies from the user and display the selected options in a textbox.",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.*;\nimport java.awt.event.*;\n\npublic class UserInputGUI {\n    public UserInputGUI() {\n        JFrame frame = new JFrame(\"User Input Form\");\n        frame.setSize(400, 300);\n        frame.setLayout(new FlowLayout());\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n\n        JLabel nameLabel = new JLabel(\"Name:\");\n        JTextField nameField = new JTextField(15);\n        JLabel classLabel = new JLabel(\"Class:\");\n        JTextField classField = new JTextField(15);\n        JLabel hobbiesLabel = new JLabel(\"Hobbies:\");\n        JTextField hobbiesField = new JTextField(15);\n        JButton submitButton = new JButton(\"Submit\");\n        JTextArea displayArea = new JTextArea(5, 30);\n\n        submitButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                String output = \"Name: \" + nameField.getText() + \"\\n\" + \"Class: \" + classField.getText() + \"\\n\" + \"Hobbies: \" + hobbiesField.getText();\n                displayArea.setText(output);\n            }\n        });\n\n        frame.add(nameLabel);\n        frame.add(nameField);\n        frame.add(classLabel);\n        frame.add(classField);\n        frame.add(hobbiesLabel);\n        frame.add(hobbiesField);\n        frame.add(submitButton);\n        frame.add(displayArea);\n\n        frame.setVisible(true);\n    }\n\n    public static void main(String[] args) {\n        new UserInputGUI();\n    }\n}"
+    },
+    {
+        "id": 101,
+        "slip_no": "slip 26",
+        "question": "Define a Item class (item_number, item_name, item_price). Define a default and parameterized constructor. Keep a count of objects created. Create objects using parameterized constructor and display the object count after each object is created.(Use static member and method). Also display the contents of each object.",
+        "language": "java",
+        "code": "class Item {\n    private int itemNumber;\n    private String itemName;\n    private double itemPrice;\n    private static int objectCount = 0;\n\n    // Default constructor\n    public Item() {\n        objectCount++;\n    }\n\n    // Parameterized constructor\n    public Item(int itemNumber, String itemName, double itemPrice) {\n        this.itemNumber = itemNumber;\n        this.itemName = itemName;\n        this.itemPrice = itemPrice;\n        objectCount++;\n        display();\n    }\n\n    public static int getObjectCount() {\n        return objectCount;\n    }\n\n    public void display() {\n        System.out.println(\"Item Number: \" + itemNumber + \", Item Name: \" + itemName + \", Item Price: \" + itemPrice);\n        System.out.println(\"Total Items Created: \" + getObjectCount());\n    }\n}\n\npublic class ItemTest {\n    public static void main(String[] args) {\n        Item item1 = new Item(101, \"Laptop\", 800.50);\n        Item item2 = new Item(102, \"Mouse\", 25.75);\n        Item item3 = new Item(103, \"Keyboard\", 45.99);\n    }\n}"
+    },
+    {
+        "id": 102,
+        "slip_no": "slip 26",
+        "question": "Define a class ‘Donor’ to store the below mentioned details of a blood donor. name, age, address, contactnumber, bloodgroup, date of last donation. Create ‘n’ objects of this class for all the regular donors at Pune. Write these objects to a file. Read these objects from the file and display only those donors’ details whose blood group is ‘A+ve’ and had not donated for the recent six months.",
+        "language": "java",
+        "code": "import java.io.*;\nimport java.util.*;\nimport java.text.SimpleDateFormat;\n\nclass Donor implements Serializable {\n    private String name;\n    private int age;\n    private String address;\n    private String contactNumber;\n    private String bloodGroup;\n    private Date lastDonationDate;\n\n    public Donor(String name, int age, String address, String contactNumber, String bloodGroup, Date lastDonationDate) {\n        this.name = name;\n        this.age = age;\n        this.address = address;\n        this.contactNumber = contactNumber;\n        this.bloodGroup = bloodGroup;\n        this.lastDonationDate = lastDonationDate;\n    }\n\n    public String getBloodGroup() {\n        return bloodGroup;\n    }\n\n    public Date getLastDonationDate() {\n        return lastDonationDate;\n    }\n\n    public void display() {\n        SimpleDateFormat sdf = new SimpleDateFormat(\"dd/MM/yyyy\");\n        System.out.println(\"Name: \" + name + \", Age: \" + age + \", Address: \" + address + \", Contact: \" + contactNumber + \", Blood Group: \" + bloodGroup + \", Last Donation: \" + sdf.format(lastDonationDate));\n    }\n}\n\npublic class DonorManagement {\n    public static void main(String[] args) throws IOException, ClassNotFoundException {\n        List<Donor> donors = new ArrayList<>();\n        donors.add(new Donor(\"John Doe\", 30, \"123 Main St\", \"1234567890\", \"A+ve\", new SimpleDateFormat(\"dd/MM/yyyy\").parse(\"01/01/2024\")));\n        donors.add(new Donor(\"Jane Smith\", 25, \"456 Elm St\", \"0987654321\", \"O-ve\", new SimpleDateFormat(\"dd/MM/yyyy\").parse(\"15/05/2024\")));\n\n        // Write to file\n        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(\"donors.dat\"));\n        oos.writeObject(donors);\n        oos.close();\n\n        // Read from file and display A+ve donors not donated in last 6 months\n        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(\"donors.dat\"));\n        List<Donor> readDonors = (List<Donor>) ois.readObject();\n        ois.close();\n\n        Calendar calendar = Calendar.getInstance();\n        calendar.add(Calendar.MONTH, -6);\n        Date sixMonthsAgo = calendar.getTime();\n\n        System.out.println(\"Donors with Blood Group A+ve who haven't donated in the last 6 months:\");\n        for (Donor donor : readDonors) {\n            if (donor.getBloodGroup().equals(\"A+ve\") && donor.getLastDonationDate().before(sixMonthsAgo)) {\n                donor.display();\n            }\n        }\n    }\n}"
+    },
+    {
+        "id": 103,
+        "slip_no": "slip 27",
+        "question": "Define an Employee class with suitable attributes having getSalary() method, which returns salary withdrawn by a particular employee. Write a class Manager which extends a class Employee, override the getSalary() method, which will return salary of manager by adding traveling allowance, house rent allowance etc.",
+        "language": "java",
+        "code": "class Employee {\n    protected double baseSalary;\n\n    public Employee(double baseSalary) {\n        this.baseSalary = baseSalary;\n    }\n\n    public double getSalary() {\n        return baseSalary;\n    }\n}\n\nclass Manager extends Employee {\n    private double travelAllowance;\n    private double houseRentAllowance;\n\n    public Manager(double baseSalary, double travelAllowance, double houseRentAllowance) {\n        super(baseSalary);\n        this.travelAllowance = travelAllowance;\n        this.houseRentAllowance = houseRentAllowance;\n    }\n\n    @Override\n    public double getSalary() {\n        return baseSalary + travelAllowance + houseRentAllowance;\n    }\n}\n\npublic class EmployeeTest {\n    public static void main(String[] args) {\n        Employee emp = new Employee(3000);\n        Manager mgr = new Manager(5000, 2000, 1500);\n\n        System.out.println(\"Employee Salary: \" + emp.getSalary());\n        System.out.println(\"Manager Salary: \" + mgr.getSalary());\n    }\n}"
+    },
+    {
+        "id": 104,
+        "slip_no": "slip 27",
+        "question": "Write a program to accept a string as command line argument and check whether it is a file or directory. Also perform operations as follows: i)If it is a directory, delete all text files in that directory. Confirm delete operation from user before deleting text files. Also, display a count showing the number of files deleted, if any, from the directory. ii)If it is a file display various details of that file.",
+        "language": "java",
+        "code": "import java.io.*;\nimport java.util.Scanner;\n\npublic class FileDirectoryCheck {\n    public static void main(String[] args) {\n        if (args.length != 1) {\n            System.out.println(\"Please provide a file or directory path as command line argument.\");\n            return;\n        }\n\n        File file = new File(args[0]);\n\n        if (file.isDirectory()) {\n            File[] files = file.listFiles();\n            int deletedCount = 0;\n            Scanner scanner = new Scanner(System.in);\n\n            System.out.println(\"Are you sure you want to delete all text files in this directory? (yes/no)\");\n            String response = scanner.nextLine();\n            if (response.equalsIgnoreCase(\"yes\")) {\n                for (File f : files) {\n                    if (f.isFile() && f.getName().endsWith(\".txt\")) {\n                        if (f.delete()) {\n                            deletedCount++;\n                        }\n                    }\n                }\n            }\n            System.out.println(deletedCount + \" text files deleted.\");\n            scanner.close();\n        } else if (file.isFile()) {\n            System.out.println(\"File Details:\");\n            System.out.println(\"Name: \" + file.getName());\n            System.out.println(\"Path: \" + file.getAbsolutePath());\n            System.out.println(\"Readable: \" + file.canRead());\n            System.out.println(\"Writable: \" + file.canWrite());\n            System.out.println(\"Size: \" + file.length() + \" bytes\");\n        } else {\n            System.out.println(\"The specified path is neither a file nor a directory.\");\n        }\n    }\n}"
+    },
+    {
+        "id": 105,
+        "slip_no": "slip 28",
+        "question": "Write a program that reads one file name from the user, then displays information about whether the file exists, whether the file is readable, whether the file is writable, the type of file and the length of the file in bytes.",
+        "language": "java",
+        "code": "import java.io.*;\nimport java.util.Scanner;\n\npublic class FileInfo {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter the file name: \");\n        String fileName = scanner.nextLine();\n        File file = new File(fileName);\n\n        System.out.println(\"File Exists: \" + file.exists());\n        System.out.println(\"Readable: \" + file.canRead());\n        System.out.println(\"Writable: \" + file.canWrite());\n        System.out.println(\"File Type: \" + (file.isDirectory() ? \"Directory\" : \"File\"));\n        System.out.println(\"File Size: \" + file.length() + \" bytes\");\n\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 106,
+        "slip_no": "slip 28",
+        "question": "Write a program called SwingTemperatureConverter to convert temperature values between Celsius and Fahrenheit. User can enter either the Celsius or the Fahrenheit value, in floating-point number. Hints: To display a floating-point number in a specific format (e.g., 1 decimal place), use the static method String.format(), which has the same form as printf(). For example, String.format(\"%.1f\", 1.234) returns String \"1.2\".",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.event.*;\n\npublic class SwingTemperatureConverter {\n    public static void main(String[] args) {\n        JFrame frame = new JFrame(\"Temperature Converter\");\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.setSize(300, 200);\n        frame.setLayout(null);\n\n        JLabel celsiusLabel = new JLabel(\"Celsius:\");\n        celsiusLabel.setBounds(20, 20, 100, 30);\n        JTextField celsiusField = new JTextField();\n        celsiusField.setBounds(120, 20, 150, 30);\n\n        JLabel fahrenheitLabel = new JLabel(\"Fahrenheit:\");\n        fahrenheitLabel.setBounds(20, 60, 100, 30);\n        JTextField fahrenheitField = new JTextField();\n        fahrenheitField.setBounds(120, 60, 150, 30);\n\n        JButton convertButton = new JButton(\"Convert\");\n        convertButton.setBounds(20, 100, 250, 30);\n\n        convertButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                try {\n                    if (!celsiusField.getText().isEmpty()) {\n                        double celsius = Double.parseDouble(celsiusField.getText());\n                        double fahrenheit = (celsius * 9/5) + 32;\n                        fahrenheitField.setText(String.format(\"%.1f\", fahrenheit));\n                    } else if (!fahrenheitField.getText().isEmpty()) {\n                        double fahrenheit = Double.parseDouble(fahrenheitField.getText());\n                        double celsius = (fahrenheit - 32) * 5/9;\n                        celsiusField.setText(String.format(\"%.1f\", celsius));\n                    }\n                } catch (NumberFormatException ex) {\n                    JOptionPane.showMessageDialog(frame, \"Please enter a valid number.\");\n                }\n            }\n        });\n\n        frame.add(celsiusLabel);\n        frame.add(celsiusField);\n        frame.add(fahrenheitLabel);\n        frame.add(fahrenheitField);\n        frame.add(convertButton);\n\n        frame.setVisible(true);\n    }\n}"
+    },
+    {
+        "id": 107,
+        "slip_no": "slip 29",
+        "question": "Write a program to create a class Customer(custno,custname,contactnumber,custaddr). Write a method to search the customer name with given contact number and display the details.",
+        "language": "java",
+        "code": "import java.util.*;\n\nclass Customer {\n    private int custNo;\n    private String custName;\n    private String contactNumber;\n    private String custAddr;\n\n    public Customer(int custNo, String custName, String contactNumber, String custAddr) {\n        this.custNo = custNo;\n        this.custName = custName;\n        this.contactNumber = contactNumber;\n        this.custAddr = custAddr;\n    }\n\n    public String getContactNumber() {\n        return contactNumber;\n    }\n\n    public void display() {\n        System.out.println(\"Customer No: \" + custNo + \", Name: \" + custName + \", Contact: \" + contactNumber + \", Address: \" + custAddr);\n    }\n}\n\npublic class CustomerSearch {\n    public static void main(String[] args) {\n        List<Customer> customers = new ArrayList<>();\n        customers.add(new Customer(1, \"Alice\", \"1234567890\", \"Street 1\"));\n        customers.add(new Customer(2, \"Bob\", \"0987654321\", \"Street 2\"));\n\n        Scanner scanner = new Scanner(System.in);\n        System.out.print(\"Enter contact number to search: \");\n        String searchContact = scanner.nextLine();\n\n        for (Customer customer : customers) {\n            if (customer.getContactNumber().equals(searchContact)) {\n                customer.display();\n                break;\n            }\n        }\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 108,
+        "slip_no": "slip 29",
+        "question": "Write a program to create a super class Vehicle having members Company and price. Derive two different classes LightMotorVehicle(mileage) and HeavyMotorVehicle(capacity_in_tons). Accept the information for \"n\" vehicles and display the information in appropriate form. While taking data, ask user about the type of vehicle first.",
+        "language": "java",
+        "code": "import java.util.*;\n\nclass Vehicle {\n    protected String company;\n    protected double price;\n\n    public Vehicle(String company, double price) {\n        this.company = company;\n        this.price = price;\n    }\n}\n\nclass LightMotorVehicle extends Vehicle {\n    private double mileage;\n\n    public LightMotorVehicle(String company, double price, double mileage) {\n        super(company, price);\n        this.mileage = mileage;\n    }\n\n    public void display() {\n        System.out.println(\"Light Motor Vehicle: Company: \" + company + \", Price: \" + price + \", Mileage: \" + mileage);\n    }\n}\n\nclass HeavyMotorVehicle extends Vehicle {\n    private double capacityInTons;\n\n    public HeavyMotorVehicle(String company, double price, double capacityInTons) {\n        super(company, price);\n        this.capacityInTons = capacityInTons;\n    }\n\n    public void display() {\n        System.out.println(\"Heavy Motor Vehicle: Company: \" + company + \", Price: \" + price + \", Capacity: \" + capacityInTons + \" tons\");\n    }\n}\n\npublic class VehicleTest {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        List<Vehicle> vehicles = new ArrayList<>();\n        System.out.print(\"Enter number of vehicles: \");\n        int n = scanner.nextInt();\n        scanner.nextLine(); // consume newline\n\n        for (int i = 0; i < n; i++) {\n            System.out.print(\"Enter type of vehicle (Light/Heavy): \");\n            String type = scanner.nextLine();\n            System.out.print(\"Enter Company: \");\n            String company = scanner.nextLine();\n            System.out.print(\"Enter Price: \");\n            double price = scanner.nextDouble();\n            scanner.nextLine(); // consume newline\n\n            if (type.equalsIgnoreCase(\"Light\")) {\n                System.out.print(\"Enter Mileage: \");\n                double mileage = scanner.nextDouble();\n                vehicles.add(new LightMotorVehicle(company, price, mileage));\n            } else if (type.equalsIgnoreCase(\"Heavy\")) {\n                System.out.print(\"Enter Capacity in tons: \");\n                double capacity = scanner.nextDouble();\n                vehicles.add(new HeavyMotorVehicle(company, price, capacity));\n            }\n            scanner.nextLine(); // consume newline\n        }\n\n        System.out.println(\"Vehicle Information:\");\n        for (Vehicle vehicle : vehicles) {\n            if (vehicle instanceof LightMotorVehicle) {\n                ((LightMotorVehicle) vehicle).display();\n            } else if (vehicle instanceof HeavyMotorVehicle) {\n                ((HeavyMotorVehicle) vehicle).display();\n            }\n        }\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 109,
+        "slip_no": "slip 30",
+        "question": "Write program to define class Person with data member as Personname, Aadharno, PanNo. Accept information for 5 objects and display appropriate information (use this keyword).",
+        "language": "java",
+        "code": "import java.util.*;\n\nclass Person {\n    private String personName;\n    private String aadharNo;\n    private String panNo;\n\n    public Person(String personName, String aadharNo, String panNo) {\n        this.personName = personName;\n        this.aadharNo = aadharNo;\n        this.panNo = panNo;\n    }\n\n    public void display() {\n        System.out.println(\"Name: \" + this.personName + \", Aadhar No: \" + this.aadharNo + \", PAN No: \" + this.panNo);\n    }\n}\n\npublic class PersonTest {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        List<Person> people = new ArrayList<>();\n\n        for (int i = 0; i < 5; i++) {\n            System.out.print(\"Enter name: \");\n            String name = scanner.nextLine();\n            System.out.print(\"Enter Aadhar No: \");\n            String aadharNo = scanner.nextLine();\n            System.out.print(\"Enter PAN No: \");\n            String panNo = scanner.nextLine();\n            people.add(new Person(name, aadharNo, panNo));\n        }\n\n        System.out.println(\"Person Information:\");\n        for (Person person : people) {\n            person.display();\n        }\n        scanner.close();\n    }\n}"
+    },
+    {
+        "id": 110,
+        "slip_no": "slip 30",
+        "question": "Write a program that creates a user interface to perform integer divisions. The user enters two numbers in the text fields, Number1 and Number2. The division of Number1 and Number2 is displayed in the Result field when the Divide button is clicked. If Number1 or Number2 were not an integer, the program would throw a NumberFormatException. If Number2 were Zero, the program would throw an Arithmetic Exception Display the exception in a message dialog box.",
+        "language": "java",
+        "code": "import javax.swing.*;\nimport java.awt.event.*;\n\npublic class IntegerDivision {\n    public static void main(String[] args) {\n        JFrame frame = new JFrame(\"Integer Division\");\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.setSize(300, 200);\n        frame.setLayout(null);\n\n        JLabel num1Label = new JLabel(\"Number 1:\");\n        num1Label.setBounds(20, 20, 100, 30);\n        JTextField num1Field = new JTextField();\n        num1Field.setBounds(120, 20, 150, 30);\n\n        JLabel num2Label = new JLabel(\"Number 2:\");\n        num2Label.setBounds(20, 60, 100, 30);\n        JTextField num2Field = new JTextField();\n        num2Field.setBounds(120, 60, 150, 30);\n\n        JButton divideButton = new JButton(\"Divide\");\n        divideButton.setBounds(20, 100, 250, 30);\n\n        JLabel resultLabel = new JLabel(\"Result:\");\n        resultLabel.setBounds(20, 140, 100, 30);\n        JTextField resultField = new JTextField();\n        resultField.setBounds(120, 140, 150, 30);\n        resultField.setEditable(false);\n\n        divideButton.addActionListener(new ActionListener() {\n            public void actionPerformed(ActionEvent e) {\n                try {\n                    int num1 = Integer.parseInt(num1Field.getText());\n                    int num2 = Integer.parseInt(num2Field.getText());\n                    int result = num1 / num2;\n                    resultField.setText(String.valueOf(result));\n                } catch (NumberFormatException ex) {\n                    JOptionPane.showMessageDialog(frame, \"Please enter valid integers.\");\n                } catch (ArithmeticException ex) {\n                    JOptionPane.showMessageDialog(frame, \"Cannot divide by zero.\");\n                }\n            }\n        });\n\n        frame.add(num1Label);\n        frame.add(num1Field);\n        frame.add(num2Label);\n        frame.add(num2Field);\n        frame.add(divideButton);\n        frame.add(resultLabel);\n        frame.add(resultField);\n\n        frame.setVisible(true);\n    }\n}"
+    },
+    {
+        "id": 111,
+        "slip_no": "slip 1",
+        "question": "Write the HTML code for generating the form as shown below. Apply the internal CSS to following form to change the font size of the heading to 6pt and change the color to red and also change the background color to yellow.",
+        "language": "php",
+        "code": "<?php\n// HTML form with internal CSS\n?>\n<!DOCTYPE html>\n<html>\n<head>\n<style>\n  h1 {\n    font-size: 6pt;\n    color: red;\n  }\n  body {\n    background-color: yellow;\n  }\n</style>\n</head>\n<body>\n<h1>Sample Form</h1>\n<form>\n  <label for='name'>Name:</label><br>\n  <input type='text' id='name' name='name'><br>\n  <input type='submit' value='Submit'>\n</form>\n</body>\n</html>"
+    },
+    {
+        "id": 112,
+        "slip_no": "slip 2",
+        "question": "Create HTML5 page with following specifications [15] i) Title should be about your City. ii) Color the background by Pink color. iii) Place your city name at the top of page in large text and in blue color. iv) Add names of the landmarks in your city, each in different color, style and font v) Add any image at the bottom. (Use inline CSS to format the web page)",
+        "language": "php",
+        "code": "<!DOCTYPE html>\n<html>\n<head>\n  <title>My City</title>\n</head>\n<body style='background-color:pink;'>\n  <h1 style='color:blue;'>My City Name</h1>\n  <p style='color:red; font-family: Arial;'>Landmark 1</p>\n  <p style='color:green; font-family: Verdana;'>Landmark 2</p>\n  <p style='color:orange; font-family: Courier;'>Landmark 3</p>\n  <img src='city_image.jpg' alt='City Image' style='width:500px; height:auto;'>\n</body>\n</html>"
+    },
+    {
+        "id": 113,
+        "slip_no": "slip 3",
+        "question": "Write a program using html with following CSS specifications- [15] i. The background colour of the company name should be in green. ii. The text colour of the company name should be red. iii. The heading should be large –with font 'comic sans ms' iv. The description of the company should be displayed in blue color in a paragraph.",
+        "language": "php",
+        "code": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Company</title>\n  <style>\n    .company-name {\n      background-color: green;\n      color: red;\n      font-family: 'Comic Sans MS';\n      font-size: 24px;\n      padding: 10px;\n    }\n    .description {\n      color: blue;\n    }\n  </style>\n</head>\n<body>\n  <div class='company-name'>Company Name</div>\n  <p class='description'>This is the description of the company displayed in blue.</p>\n</body>\n</html>"
+    },
+    {
+        "id": 114,
+        "slip_no": "slip 4",
+        "question": "Write a HTML code, which generate the following output in table List of Books ,Item No ,Item Name ,Price,Rs. and Paise .data 1.Programming in Python 500 50 ,2 .Programming in Java 345 00",
+        "language": "php",
+        "code": "<!DOCTYPE html>\n<html>\n<head>\n  <title>List of Books</title>\n</head>\n<body>\n  <h2>List of Books</h2>\n  <table border='1'>\n    <tr>\n      <th>Item No</th>\n      <th>Item Name</th>\n      <th>Price (Rs.)</th>\n    </tr>\n    <tr>\n      <td>1</td>\n      <td>Programming in Python</td>\n      <td>500.50</td>\n    </tr>\n    <tr>\n      <td>2</td>\n      <td>Programming in Java</td>\n      <td>345.00</td>\n    </tr>\n  </table>\n</body>\n</html>"
+    },
+    {
+        "id": 115,
+        "slip_no": "slip 5",
+        "question": "A) Generate a random array of 50 integers and display them using a line chart, scatterplot, histogram and box plot. Apply appropriate color, labels and styling options.B) Write a Python program to print the shape, number of rows-columns, data types, feature names and the description of the data(Use User_Data.csv)",
+        "language": "python",
+        "code": "import numpy as np\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# A) Generate a random array\ndata = np.random.randint(1, 100, 50)\n\n# Plotting\nplt.figure(figsize=(10, 6))\nplt.subplot(2, 2, 1)\nplt.plot(data, marker='o')\nplt.title('Line Chart')\nplt.grid()\n\nplt.subplot(2, 2, 2)\nplt.scatter(range(len(data)), data, color='r')\nplt.title('Scatter Plot')\n\nplt.subplot(2, 2, 3)\nplt.hist(data, bins=10, color='g')\nplt.title('Histogram')\n\nplt.subplot(2, 2, 4)\nplt.boxplot(data)\nplt.title('Box Plot')\n\nplt.tight_layout()\nplt.show()\n\n# B) Read User_Data.csv\nuser_data = pd.read_csv('User_Data.csv')\nprint(user_data.shape)  # Number of rows and columns\nprint(user_data.dtypes)  # Data types\nprint(user_data.columns)  # Feature names\nprint(user_data.describe())  # Description"
+    },
+    {
+        "id": 116,
+        "slip_no": "slip 6",
+        "question": "Create following Bootstrap Web Layout Design and set Header background color Blue, add your College name, set Menu section background color green create menu About Us, In content section add college information, background color yellow, Footer section background color red, add address of college.",
+        "language": "php",
+        "code": "<!DOCTYPE html>\n<html>\n<head>\n  <title>College Web Layout</title>\n  <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>\n</head>\n<body>\n  <header class='bg-primary text-white text-center p-4'>\n    <h1>My College Name</h1>\n  </header>\n  <nav class='bg-success text-white p-2'>\n    <ul class='list-unstyled'>\n      <li><a href='#' class='text-white'>About Us</a></li>\n    </ul>\n  </nav>\n  <div class='container' style='background-color:yellow;'>\n    <h2>College Information</h2>\n    <p>Some information about the college.</p>\n  </div>\n  <footer class='bg-danger text-white text-center p-3'>\n    <p>Address of College</p>\n  </footer>\n</body>\n</html>"
+    },
+    {
+        "id": 117,
+        "slip_no": "slip 7",
+        "question": "Write a Python program to perform the following tasks : a. Apply OneHot coding on Country column. b. Apply Label encoding on purchased column (Data.csv have two categorical column the country column, and the purchased column).",
+        "language": "python",
+        "code": "import pandas as pd\nfrom sklearn.preprocessing import OneHotEncoder, LabelEncoder\n\n# Load data\ndata = pd.read_csv('Data.csv')\n\n# OneHot encoding on 'Country' column\nonehotencoder = OneHotEncoder()\ncountry_encoded = onehotencoder.fit_transform(data[['Country']]).toarray()\n\n# Label encoding on 'Purchased' column\nlabelencoder = LabelEncoder()\ndata['Purchased'] = labelencoder.fit_transform(data['Purchased'])\n\n# Combine encoded columns with original dataframe\nencoded_df = pd.DataFrame(country_encoded, columns=onehotencoder.get_feature_names_out(['Country']))\nfinal_df = pd.concat([data, encoded_df], axis=1)\nprint(final_df)"
+    },
+    {
+        "id": 118,
+        "slip_no": "slip 8",
+        "question": "Design an HTML form to accept two strings from the user. Write a PHP script for the following. a. Find whether the small string appears at the start of the large string. b. Find the position of the small string in the big string. c. Compare both the string for first n characters, also the comparison should not be case sensitive.",
+        "language": "php",
+        "code": "<?php\n// HTML form to accept two strings\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <title>String Comparison</title>\n</head>\n<body>\n  <form method='post'>\n    <label for='largeString'>Large String:</label><br>\n    <input type='text' id='largeString' name='largeString' required><br>\n    <label for='smallString'>Small String:</label><br>\n    <input type='text' id='smallString' name='smallString' required><br>\n    <label for='n'>Number of characters to compare:</label><br>\n    <input type='number' id='n' name='n' required><br>\n    <input type='submit' value='Submit'>\n  </form>\n  <?php\n  if ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $largeString = $_POST['largeString'];\n    $smallString = $_POST['smallString'];\n    $n = (int)$_POST['n'];\n\n    // Check if small string is at the start of large string\n    $startsWith = strpos($largeString, $smallString) === 0;\n    echo $startsWith ? 'Small string is at the start of the large string.' : 'Small string is NOT at the start.';\n\n    // Find position of small string in large string\n    $position = strpos($largeString, $smallString);\n    echo '<br>Position of small string: ' . ($position !== false ? $position : 'Not found');\n\n    // Compare first n characters\n    $comparison = strncasecmp(substr($largeString, 0, $n), substr($smallString, 0, $n)) === 0;\n    echo '<br>First ' . $n . ' characters are ' . ($comparison ? 'equal' : 'not equal') . '.';\n  }\n  ?>\n</body>\n</html>"
+    },
+    {
+        "id": 119,
+        "slip_no": "slip 9",
+        "question": "Write a PHP script for the following: Design a form having a text box and a drop down list containing any 3 separators(e.g. #, |, %, @, ! or comma) accept a strings from the user and also a separator. a. Split the string into separate words using the given separator. b. Replace all the occurrences of separator in the given string with some other separator. c. Find the last word in the given string.",
+        "language": "php",
+        "code": "<?php\n// HTML form with separators\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <title>String Separator</title>\n</head>\n<body>\n  <form method='post'>\n    <label for='inputString'>Input String:</label><br>\n    <input type='text' id='inputString' name='inputString' required><br>\n    <label for='separator'>Select Separator:</label><br>\n    <select id='separator' name='separator'>\n      <option value='#'>#</option>\n      <option value='|'>|</option>\n      <option value='%'>%</option>\n    </select><br>\n    <input type='submit' value='Submit'>\n  </form>\n  <?php\n  if ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $inputString = $_POST['inputString'];\n    $separator = $_POST['separator'];\n\n    // Split the string\n    $words = explode($separator, $inputString);\n    echo 'Words: ' . implode(', ', $words) . '<br>';\n\n    // Replace separator\n    $newSeparator = ','; // or any new separator you want to use\n    $replacedString = str_replace($separator, $newSeparator, $inputString);\n    echo 'Replaced String: ' . $replacedString . '<br>';\n\n    // Find last word\n    $lastWord = end($words);\n    echo 'Last word: ' . $lastWord;\n  }\n  ?>\n</body>\n</html>"
+    },
+    {
+        "id": 120,
+        "slip_no": "slip 10",
+        "question": "Write a script to accept two integers(Use html form having 2 textboxes). Write a PHP script to, a. Find mod of the two numbers. b. Find the power of first number raised to the second. c. Find the sum of first n numbers (considering first number as n) d. Find the factorial of second number. (Write separate function for each of the above operations.)",
+        "language": "php",
+        "code": "<?php\n// HTML form to accept two integers\n?>\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Integer Operations</title>\n</head>\n<body>\n  <form method='post'>\n    <label for='num1'>First Number:</label><br>\n    <input type='number' id='num1' name='num1' required><br>\n    <label for='num2'>Second Number:</label><br>\n    <input type='number' id='num2' name='num2' required><br>\n    <input type='submit' value='Submit'>\n  </form>\n  <?php\n  function findMod($a, $b) {\n    return $a % $b;\n  }\n\n  function findPower($a, $b) {\n    return pow($a, $b);\n  }\n\n  function sumOfFirstN($n) {\n    return ($n * ($n + 1)) / 2;\n  }\n\n  function findFactorial($n) {\n    return ($n == 0) ? 1 : $n * findFactorial($n - 1);\n  }\n\n  if ($_SERVER['REQUEST_METHOD'] == 'POST') {\n    $num1 = (int)$_POST['num1'];\n    $num2 = (int)$_POST['num2'];\n\n    echo 'Mod: ' . findMod($num1, $num2) . '<br>';\n    echo 'Power: ' . findPower($num1, $num2) . '<br>';\n    echo 'Sum of first ' . $num1 . ': ' . sumOfFirstN($num1) . '<br>';\n    echo 'Factorial of ' . $num2 . ': ' . findFactorial($num2) . '<br>';\n  }\n  ?>\n</body>\n</html>"
+    },
+    {
+        "id": 121,
+        "slip_no": "slip 11",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 122,
+        "slip_no": "slip 12",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 123,
+        "slip_no": "slip 13",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 124,
+        "slip_no": "slip 14",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 125,
+        "slip_no": "slip 15",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 126,
+        "slip_no": "slip 16",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 127,
+        "slip_no": "slip 17",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 128,
+        "slip_no": "slip 18",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 129,
+        "slip_no": "slip 19",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 130,
+        "slip_no": "slip 20",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 131,
+        "slip_no": "slip 21",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 132,
+        "slip_no": "slip 22",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 133,
+        "slip_no": "slip 23",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 134,
+        "slip_no": "slip 24",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 135,
+        "slip_no": "slip 25",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 136,
+        "slip_no": "slip 26",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 137,
+        "slip_no": "slip 27",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 138,
+        "slip_no": "slip 28",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 139,
+        "slip_no": "slip 29",
+        "question": "",
+        "language": "php",
+        "code": ""
+    },
+    {
+        "id": 140,
+        "slip_no": "slip 30",
+        "question": "",
+        "language": "php",
+        "code": ""
     }
 ]
