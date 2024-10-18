@@ -1097,5 +1097,13 @@
         "question": "A) Write a Python program to create a Pie plot to get the frequency of the three species of the Iris data (Use iris.csv)\nB) Write a Python program to view basic statistical details of the data.(Use winequality-red.csv)",
         "language": "python",
         "code": "#A)\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the iris dataset\niris_data = pd.read_csv('iris.csv')\n\n# Group data by species and count occurrences\nspecies_counts = iris_data['species'].value_counts()\n\n# Plot pie chart\nplt.figure(figsize=(8, 6))\nplt.pie(species_counts, labels=species_counts.index, autopct='%1.1f%%', startangle=90, colors=['skyblue', 'lightgreen', 'orange'])\nplt.title('Species Distribution in Iris Dataset')\nplt.show()\n#B)\nimport pandas as pd\n\n# Load the wine dataset\nwine_data = pd.read_csv('winequality-red.csv')\n\n# View basic statistical details\nstatistical_details = wine_data.describe()\n\n# Print the results\nprint(statistical_details)"
+    },
+    {
+        "id": 157,
+        "slip_no": "slip 2",
+        "question": "A) Write a Python program for Handling Missing Value. Replace missing value of salary, age column with mean of that column.(Use Data.csv file).\nB) Write a Python program to generate a line plot of name Vs salary. Download the heights and weights dataset and load the dataset from a given csv file into a dataframe. Print the first, last 10 rows and random 20 rows, also display the shape of the dataset.",
+        "language": "python",
+        "code": "#A)\nimport pandas as pd\n\n# Load the data\ndata = pd.read_csv('Data.csv')\n\n# Replace missing values in 'salary' and 'age' columns with their respective means\ndata['salary'].fillna(data['salary'].mean(), inplace=True)\ndata['age'].fillna(data['age'].mean(), inplace=True)\n\n# Display the dataset after replacing missing values\nprint(data)\n\n#B)\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# Load the heights and weights dataset\ndataset = pd.read_csv('heights_weights.csv')\n\n# Print first 10 rows\nprint('First 10 rows:')\nprint(dataset.head(10))\n\n# Print last 10 rows\nprint('Last 10 rows:')\nprint(dataset.tail(10))\n\n# Print 20 random rows\nprint('Random 20 rows:')\nprint(dataset.sample(20))\n\n# Display the shape of the dataset\nprint('Shape of dataset:', dataset.shape)\n\n# Generate line plot for 'name' vs 'salary'\nplt.figure(figsize=(10, 6))\nplt.plot(data['name'], data['salary'], marker='o', color='b')\nplt.title('Name vs Salary')\nplt.xlabel('Name')\nplt.ylabel('Salary')\nplt.xticks(rotation=90)\nplt.tight_layout()\nplt.show()"
     }
+
 ]
