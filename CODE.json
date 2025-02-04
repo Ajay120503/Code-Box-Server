@@ -3,6 +3,7 @@
         "id": 1,
         "slip_no": "",
         "language": "c",
+        "question": "Banker's Algorithm",
         "code": "#include <stdio.h> int main(void) { int r, p, i, j, done = 0; printf(\"Enter number of resources: \"); scanf(\"%d\", &r); int total[r], avail[r]; for(i = 0; i < r; i++) { printf(\"Total instances for resource %c: \", 'A' + i); scanf(\"%d\", &total[i]); avail[i] = total[i]; } printf(\"Enter number of processes: \"); scanf(\"%d\", &p); int alloc[p][r], max[p][r], need[p][r], finish[p], safe[p]; for(i = 0; i < p; i++) finish[i] = 0; for(i = 0; i < p; i++) { printf(\"Enter allocation for P[%d]:\\n\", i); for(j = 0; j < r; j++) { scanf(\"%d\", &alloc[i][j]); avail[j] -= alloc[i][j]; } } for(i = 0; i < p; i++) { printf(\"Enter max demand for P[%d]:\\n\", i); for(j = 0; j < r; j++) { scanf(\"%d\", &max[i][j]); need[i][j] = max[i][j] - alloc[i][j]; } } while(done < p) { int progress = 0; for(i = 0; i < p; i++) { if(!finish[i]) { int canRun = 1; for(j = 0; j < r; j++) { if(need[i][j] > avail[j]) { canRun = 0; break; } } if(canRun) { safe[done++] = i; finish[i] = 1; for(j = 0; j < r; j++) { avail[j] += alloc[i][j]; } progress = 1; } } } if(!progress) break; } if(done == p) { printf(\"Safe sequence: \"); for(i = 0; i < p; i++) { printf(\"P[%d] \", safe[i]); } printf(\"\\n\"); } else { printf(\"System is not in a safe state.\\n\"); } return 0; }"
     }
 ]
