@@ -5,5 +5,85 @@
         "language": "c",
         "question": "Banker's Algorithm",
         "code": "#include <stdio.h>\n\nint main(void) {\n    int r, p, i, j, done = 0;\n    printf(\"Enter number of resources: \");\n    scanf(\"%d\", &r);\n    int total[r], avail[r];\n    for(i = 0; i < r; i++) {\n        printf(\"Total instances for resource %c: \", 'A' + i);\n        scanf(\"%d\", &total[i]);\n        avail[i] = total[i];  // initialize available resources\n    }\n    printf(\"Enter number of processes: \");\n    scanf(\"%d\", &p);\n    int alloc[p][r], max[p][r], need[p][r], finish[p], safe[p];\n    for(i = 0; i < p; i++)\n        finish[i] = 0;\n    \n    // Input allocation matrix and update available resources\n    for(i = 0; i < p; i++) {\n        printf(\"Enter allocation for P[%d]:\\n\", i);\n        for(j = 0; j < r; j++) {\n            scanf(\"%d\", &alloc[i][j]);\n            avail[j] -= alloc[i][j];\n        }\n    }\n    \n    // Input maximum demand and compute need matrix\n    for(i = 0; i < p; i++) {\n        printf(\"Enter max demand for P[%d]:\\n\", i);\n        for(j = 0; j < r; j++) {\n            scanf(\"%d\", &max[i][j]);\n            need[i][j] = max[i][j] - alloc[i][j];\n        }\n    }\n    \n    // Find safe sequence\n    while(done < p) {\n        int progress = 0;\n        for(i = 0; i < p; i++) {\n            if(!finish[i]) {\n                int canRun = 1;\n                for(j = 0; j < r; j++) {\n                    if(need[i][j] > avail[j]) {\n                        canRun = 0;\n                        break;\n                    }\n                }\n                if(canRun) {\n                    safe[done++] = i;\n                    finish[i] = 1;\n                    for(j = 0; j < r; j++)\n                        avail[j] += alloc[i][j];\n                    progress = 1;\n                }\n            }\n        }\n        if(!progress) break; // no process could be allocated resources\n    }\n    \n    // Output result\n    if(done == p) {\n        printf(\"Safe sequence: \");\n        for(i = 0; i < p; i++)\n            printf(\"P[%d] \", safe[i]);\n        printf(\"\\n\");\n    } else {\n        printf(\"System is not in a safe state.\\n\");\n    }\n    return 0;\n}\n"
-    }
+    },
+    {
+    "id": 2,
+    "slip_no": "",
+    "language": "c",
+    "question": "FCFS",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int RQ[100], n, i, TotalHeadMovement = 0, initial;\n\n    printf(\"Enter the number of requests: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter the request sequence: \");\n    for(i = 0; i < n; i++)\n        scanf(\"%d\", &RQ[i]);\n\n    printf(\"Enter initial head position: \");\n    scanf(\"%d\", &initial);\n\n    for(i = 0; i < n; i++) {\n        TotalHeadMovement += abs(RQ[i] - initial);\n        initial = RQ[i];\n    }\n\n    printf(\"Total Head Movement: %d\\n\", TotalHeadMovement);\n    return 0;\n}"
+    },
+    {
+    "id": 3,
+    "slip_no": "",
+    "language": "c",
+    "question": "SSTF",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int RQ[100], n, i, TotalHeadMovement = 0, initial, count = 0;\n\n    printf(\"Enter the number of requests: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter the request sequence: \");\n    for(i = 0; i < n; i++)\n        scanf(\"%d\", &RQ[i]);\n\n    printf(\"Enter initial head position: \");\n    scanf(\"%d\", &initial);\n\n    while(count != n) {\n        int min = 1000, d, index;\n\n        for(i = 0; i < n; i++) {\n            d = abs(RQ[i] - initial);\n            if(min > d) {\n                min = d;\n                index = i;\n            }\n        }\n\n        TotalHeadMovement += min;\n        initial = RQ[index];\n        RQ[index] = 1000; // Mark as visited\n        count++;\n    }\n\n    printf(\"Total Head Movement: %d\\n\", TotalHeadMovement);\n    return 0;\n}"
+  },
+    {
+    "id": 4,
+    "slip_no": "",
+    "language": "c",
+    "question": "SCAN",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int RQ[100], n, i, TotalHeadMovement = 0, initial, size, direction;\n\n    printf(\"Enter the number of requests: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter the request sequence: \");\n    for(i = 0; i < n; i++)\n        scanf(\"%d\", &RQ[i]);\n\n    printf(\"Enter initial head position: \");\n    scanf(\"%d\", &initial);\n\n    printf(\"Enter total disk size: \");\n    scanf(\"%d\", &size);\n\n    printf(\"Enter the direction (0 for left, 1 for right): \");\n    scanf(\"%d\", &direction);\n\n    // Sort the request array\n    for(i = 0; i < n - 1; i++) {\n        for(int j = 0; j < n - i - 1; j++) {\n            if(RQ[j] > RQ[j + 1]) {\n                int temp = RQ[j];\n                RQ[j] = RQ[j + 1];\n                RQ[j + 1] = temp;\n            }\n        }\n    }\n\n    if(direction == 0) {\n        TotalHeadMovement = initial + RQ[n - 1];\n    } else {\n        TotalHeadMovement = (size - initial) + (size - RQ[0]);\n    }\n\n    printf(\"Total Head Movement: %d\\n\", TotalHeadMovement);\n    return 0;\n}"
+  },
+  {
+    "id": 5,
+    "slip_no": "",
+    "language": "c",
+    "question": "CSCAN",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int RQ[100], n, i, TotalHeadMovement = 0, initial, size;\n\n    printf(\"Enter the number of requests: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter the request sequence: \");\n    for(i = 0; i < n; i++)\n        scanf(\"%d\", &RQ[i]);\n\n    printf(\"Enter initial head position: \");\n    scanf(\"%d\", &initial);\n\n    printf(\"Enter total disk size: \");\n    scanf(\"%d\", &size);\n\n    // Sort the request array\n    for(i = 0; i < n - 1; i++) {\n        for(int j = 0; j < n - i - 1; j++) {\n            if(RQ[j] > RQ[j + 1]) {\n                int temp = RQ[j];\n                RQ[j] = RQ[j + 1];\n                RQ[j + 1] = temp;\n            }\n        }\n    }\n\n    TotalHeadMovement = (size - initial) + (size - RQ[0]) + RQ[n - 1];\n\n    printf(\"Total Head Movement: %d\\n\", TotalHeadMovement);\n    return 0;\n}"
+  },
+    {
+    "id": 6,
+    "slip_no": "",
+    "language": "c",
+    "question": "LOOK",
+    "code": "/* LOOK Disk Scheduling Algorithm */\n#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    // Code for LOOK scheduling\n}"
+  },
+  {
+    "id": 7,
+    "slip_no": "",
+    "language": "c",
+    "question": "CLOOK",
+    "code": "/* C-LOOK Disk Scheduling Algorithm */\n#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    // Code for C-LOOK scheduling\n}"
+  },
+    {
+    "id": 8,
+    "slip_no": "",
+    "language": "c",
+    "question": "Contiguous File Allocation",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int f[50], i, st, len, j, c, k, count = 0;\n    for(i = 0; i < 50; i++)\n        f[i] = 0;\n    printf(\"Files Allocated are:\\n\");\n    while(1) {\n        count = 0;\n        printf(\"Enter starting block and length of file: \");\n        scanf(\"%d%d\", &st, &len);\n        if(st < 0 || st >= 50 || st + len > 50) {\n            printf(\"Invalid block range. Please try again.\\n\");\n            continue;\n        }\n        for(k = st; k < (st + len); k++) {\n            if(f[k] == 0)\n                count++;\n        }\n        if(len == count) {\n            for(j = st; j < (st + len); j++) {\n                if(f[j] == 0) {\n                    f[j] = 1;\n                    printf(\"%d\\t%d\\n\", j, f[j]);\n                }\n            }\n        } else {\n            printf(\"The file cannot be allocated. Not enough contiguous free space.\\n\");\n        }\n        printf(\"Do you want to allocate another file? (1 for Yes / 0 for No): \");\n        scanf(\"%d\", &c);\n        if(c == 0)\n            break;\n    }\n    return 0;\n}"
+  },
+  {
+    "id": 9,
+    "slip_no": "",
+    "language": "c",
+    "question": "Linked File Allocation",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int f[50], p, i, st, len, j, c, k, a;\n    for(i = 0; i < 50; i++)\n        f[i] = 0;\n    printf(\"Enter how many blocks are already allocated: \");\n    scanf(\"%d\", &p);\n    printf(\"Enter the blocks already allocated: \");\n    for(i = 0; i < p; i++) {\n        scanf(\"%d\", &a);\n        if(a >= 0 && a < 50)\n            f[a] = 1;\n        else\n            printf(\"Invalid block number %d, skipping.\\n\", a);\n    }\n    while(1) {\n        printf(\"Enter index starting block and length: \");\n        scanf(\"%d%d\", &st, &len);\n        if(st < 0 || st >= 50 || st + len > 50) {\n            printf(\"Invalid block range. Please try again.\\n\");\n            continue;\n        }\n        k = len;\n        if(f[st] == 0) {\n            for(j = st; j < (st + k); j++) {\n                if(f[j] == 0) {\n                    f[j] = 1;\n                    printf(\"%d --------> %d\\n\", j, f[j]);\n                } else {\n                    printf(\"%d block is already allocated\\n\", j);\n                    k++;\n                }\n            }\n        } else {\n            printf(\"%d starting block is already allocated\\n\", st);\n        }\n        printf(\"Do you want to enter more files? (Yes - 1 / No - 0): \");\n        scanf(\"%d\", &c);\n        if(c == 0)\n            break;\n    }\n    return 0;\n}"
+  },
+  {
+    "id": 10,
+    "slip_no": "",
+    "language": "c",
+    "question": "Indexed File Allocation",
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int f[50], index[50], i, n, st, len, j, c, k, ind, count = 0;\n    for(i = 0; i < 50; i++)\n        f[i] = 0;\n    while(1) {\n        printf(\"Enter the index block: \");\n        scanf(\"%d\", &ind);\n        if(ind < 0 || ind >= 50) {\n            printf(\"Invalid index block. Please try again.\\n\");\n            continue;\n        }\n        if(f[ind] != 1) {\n            printf(\"Enter number of blocks needed and number of files for index %d on the disk: \", ind);\n            scanf(\"%d\", &n);\n        } else {\n            printf(\"%d index is already allocated.\\n\", ind);\n            continue;\n        }\n        count = 0;\n        printf(\"Enter the blocks for the index: \");\n        for(i = 0; i < n; i++) {\n            scanf(\"%d\", &index[i]);\n            if(index[i] < 0 || index[i] >= 50) {\n                printf(\"Invalid block number %d, skipping.\\n\", index[i]);\n                continue;\n            }\n            if(f[index[i]] == 0)\n                count++;\n        }\n        if(count == n) {\n            for(j = 0; j < n; j++)\n                f[index[j]] = 1;\n            printf(\"Allocated\\n\");\n            printf(\"File Indexed\\n\");\n            for(k = 0; k < n; k++)\n                printf(\"%d --------> %d : %d\\n\", ind, index[k], f[index[k]]);\n        } else {\n            printf(\"Some blocks in the index are already allocated. Please enter a different file index.\\n\");\n            continue;\n        }\n        printf(\"Do you want to enter more files? (Yes - 1 / No - 0): \");\n        scanf(\"%d\", &c);\n        if(c == 0)\n            break;\n    }\n    return 0;\n}"
+  },
+    {
+  "id": 11,
+  "slip_no": "",
+  "language": "c",
+  "question": "MPI Program to Calculate Sum of Randomly Generated 1000 Numbers on a Cluster",
+  "code": "#include <mpich/mpi.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\n#define N 1000\n\nint main(int argc, char *argv[]) {\n    int a[N], a2[N];\n    int pid, np, elements_per_process, n_elements_received;\n    int sum = 0, partial_sum = 0;\n    MPI_Status status;\n\n    MPI_Init(&argc, &argv);\n    MPI_Comm_rank(MPI_COMM_WORLD, &pid);\n    MPI_Comm_size(MPI_COMM_WORLD, &np);\n\n    // Master process\n    if (pid == 0) {\n        srand(time(0));\n        for (int i = 0; i < N; i++) {\n            a[i] = rand() % 100; // Random numbers between 0 and 99\n        }\n\n        elements_per_process = N / np;\n\n        // Sending chunks of array to other processes\n        for (int i = 1; i < np; i++) {\n            int index = i * elements_per_process;\n            int elements_left = (i == np - 1) ? (N - index) : elements_per_process;\n\n            MPI_Send(&elements_left, 1, MPI_INT, i, 0, MPI_COMM_WORLD);\n            MPI_Send(&a[index], elements_left, MPI_INT, i, 0, MPI_COMM_WORLD);\n        }\n\n        // Master process calculates its own part\n        for (int i = 0; i < elements_per_process; i++) {\n            sum += a[i];\n        }\n\n        // Collecting partial sums from other processes\n        for (int i = 1; i < np; i++) {\n            MPI_Recv(&partial_sum, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);\n            sum += partial_sum;\n        }\n\n        printf(\"Total sum of array: %d\\n\", sum);\n    }\n    // Slave processes\n    else {\n        MPI_Recv(&n_elements_received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);\n        MPI_Recv(&a2, n_elements_received, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);\n\n        partial_sum = 0;\n        for (int i = 0; i < n_elements_received; i++) {\n            partial_sum += a2[i];\n        }\n\n        MPI_Send(&partial_sum, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);\n    }\n\n    MPI_Finalize();\n    return 0;\n}"
+},
+    {
+  "id": 12,
+  "slip_no": "",
+  "language": "c",
+  "question": "MPI Program to Find Min and Max Number from Randomly Generated 1000 Numbers on a Cluster (Using MPI_Reduce)",
+  "code": "#include <stdlib.h>\n#include <stdio.h>\n#include <mpi.h>\n#define N 1000\n\nint main(int argc, char* argv[]) {\n    int my_id, num_procs;\n    int array[N];\n    int local_min, local_max;\n    int global_min, global_max;\n\n    MPI_Init(&argc, &argv);\n    MPI_Comm_rank(MPI_COMM_WORLD, &my_id);\n    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);\n\n    // Seed for random number generation\n    srand(my_id + 1);\n\n    // Generate random numbers in array\n    for (int i = 0; i < N / num_procs; i++) {\n        array[i] = rand() % 1000; // Random numbers between 0 and 999\n    }\n\n    // Find local min and max in the portion assigned to this process\n    local_min = array[0];\n    local_max = array[0];\n    for (int i = 1; i < N / num_procs; i++) {\n        if (array[i] < local_min) local_min = array[i];\n        if (array[i] > local_max) local_max = array[i];\n    }\n\n    // Use MPI_Reduce to find global min and max\n    MPI_Reduce(&local_min, &global_min, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);\n    MPI_Reduce(&local_max, &global_max, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);\n\n    // Master process displays the results\n    if (my_id == 0) {\n        printf(\"Global Min: %d\\n\", global_min);\n        printf(\"Global Max: %d\\n\", global_max);\n    }\n\n    MPI_Finalize();\n    return 0;\n}"
+}
+
+    
+    
 ]
