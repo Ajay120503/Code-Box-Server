@@ -39,16 +39,16 @@
     "slip_no": "",
     "language": "c",
     "question": "LOOK",
-    "code": "/* LOOK Disk Scheduling Algorithm */\n#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    // Code for LOOK scheduling\n}"
+    "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int RQ[100], n, i, TotalHeadMovement = 0, initial, direction;\n\n    printf(\"Enter the number of requests: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter the request sequence: \");\n    for(i = 0; i < n; i++)\n        scanf(\"%d\", &RQ[i]);\n\n    printf(\"Enter initial head position: \");\n    scanf(\"%d\", &initial);\n\n    printf(\"Enter the direction (0 for left, 1 for right): \");\n    scanf(\"%d\", &direction);\n\n    // Sort the request array\n    for(i = 0; i < n - 1; i++) {\n        for(int j = 0; j < n - i - 1; j++) {\n            if(RQ[j] > RQ[j + 1]) {\n                int temp = RQ[j];\n                RQ[j] = RQ[j + 1];\n                RQ[j + 1] = temp;\n            }\n        }\n    }\n\n    if(direction == 0) {\n        TotalHeadMovement = initial - RQ[0];\n    } else {\n        TotalHeadMovement = RQ[n - 1] - initial;\n    }\n\n    printf(\"Total Head Movement: %d\\n\", TotalHeadMovement);\n    return 0;\n}"
   },
   {
-    "id": 7,
-    "slip_no": "",
-    "language": "c",
-    "question": "CLOOK",
-    "code": "/* C-LOOK Disk Scheduling Algorithm */\n#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    // Code for C-LOOK scheduling\n}"
-  },
-    {
+  "id": 7,
+  "slip_no": "",
+  "language": "c",
+  "question": "CLOOK",
+  "code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    int queue[100], n, head, i, j, seek = 0, diff;\n    int temp, size, max;\n\n    printf(\"Enter the size of the queue: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter the queue elements: \");\n    for(i = 0; i < n; i++) {\n        scanf(\"%d\", &queue[i]);\n    }\n\n    printf(\"Enter the initial head position: \");\n    scanf(\"%d\", &head);\n\n    // Sort the queue elements\n    for(i = 0; i < n; i++) {\n        for(j = 0; j < n - i - 1; j++) {\n            if(queue[j] > queue[j + 1]) {\n                temp = queue[j];\n                queue[j] = queue[j + 1];\n                queue[j + 1] = temp;\n            }\n        }\n    }\n\n    // Find the position of head in the sorted queue\n    int pos;\n    for(i = 0; i < n; i++) {\n        if(head < queue[i]) {\n            pos = i;\n            break;\n        }\n    }\n\n    // Moving towards the end of the queue\n    for(i = pos; i < n; i++) {\n        diff = abs(queue[i] - head);\n        seek += diff;\n        head = queue[i];\n        printf(\"Seeked to: %d\\n\", head);\n    }\n\n    // Moving back to the start of the queue (C-LOOK wrap-around)\n    for(i = 0; i < pos; i++) {\n        diff = abs(queue[i] - head);\n        seek += diff;\n        head = queue[i];\n        printf(\"Seeked to: %d\\n\", head);\n    }\n\n    printf(\"\\nTotal seek time: %d\\n\", seek);\n    return 0;\n}"
+},
+{
     "id": 8,
     "slip_no": "",
     "language": "c",
