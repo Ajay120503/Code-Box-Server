@@ -85,7 +85,7 @@
     },
     {
         "id": 1742478307670,
-        "slip_no": "Slip 1",
+        "slip_no": "slip 1",
         "question": "Write a PHP script to keep track of number of times the web page has been accessed (Use Session Tracking).",
         "language": "php",
         "code": "<?php\nsession_start();\n\nif (!isset($_SESSION['page_count'])) {\n    $_SESSION['page_count'] = 1;\n} else {\n    $_SESSION['page_count']++;\n}\n\necho \"<h2>You have visited this page \" . $_SESSION['page_count'] . \" times.</h2>\";\n?>\n"
